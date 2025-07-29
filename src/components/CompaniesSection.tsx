@@ -148,6 +148,120 @@ const CompaniesSection = () => {
           ))}
         </div>
 
+        {/* Key Advantages Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+          className="bg-gradient-to-r from-slate-900 to-purple-900 p-8 md:p-12 rounded-3xl text-white mb-16"
+        >
+          <h3 className="text-3xl md:text-4xl font-bold mb-8 text-center">
+            Why D-REVEAL Stands Apart
+          </h3>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              viewport={{ once: true }}
+              className="flex items-start gap-4"
+            >
+              <div className="flex-shrink-0 w-2 h-2 bg-purple-400 rounded-full mt-3"></div>
+              <div>
+                <h4 className="text-lg font-bold mb-2">No expensive infrastructure</h4>
+                <p className="text-white/80">No need for co-location, GPUs, or high-speed networks.</p>
+              </div>
+            </motion.div>
+            
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="flex items-start gap-4"
+            >
+              <div className="flex-shrink-0 w-2 h-2 bg-purple-400 rounded-full mt-3"></div>
+              <div>
+                <h4 className="text-lg font-bold mb-2">No team required</h4>
+                <p className="text-white/80">No quants, devs, or ops needed to keep it running.</p>
+              </div>
+            </motion.div>
+            
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              viewport={{ once: true }}
+              className="flex items-start gap-4"
+            >
+              <div className="flex-shrink-0 w-2 h-2 bg-purple-400 rounded-full mt-3"></div>
+              <div>
+                <h4 className="text-lg font-bold mb-2">Self-contained intelligence</h4>
+                <p className="text-white/80">The model forecasts forward based on real patterns, not lagging indicators.</p>
+              </div>
+            </motion.div>
+            
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              viewport={{ once: true }}
+              className="flex items-start gap-4"
+            >
+              <div className="flex-shrink-0 w-2 h-2 bg-purple-400 rounded-full mt-3"></div>
+              <div>
+                <h4 className="text-lg font-bold mb-2">Clear output</h4>
+                <p className="text-white/80">Visual candlestick forecasts, not abstract statistics.</p>
+              </div>
+            </motion.div>
+            
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              viewport={{ once: true }}
+              className="flex items-start gap-4"
+            >
+              <div className="flex-shrink-0 w-2 h-2 bg-purple-400 rounded-full mt-3"></div>
+              <div>
+                <h4 className="text-lg font-bold mb-2">Adaptable</h4>
+                <p className="text-white/80">Works across assets and timeframes without custom tuning.</p>
+              </div>
+            </motion.div>
+            
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+              viewport={{ once: true }}
+              className="flex items-start gap-4"
+            >
+              <div className="flex-shrink-0 w-2 h-2 bg-purple-400 rounded-full mt-3"></div>
+              <div>
+                <h4 className="text-lg font-bold mb-2">Lightweight and scalable</h4>
+                <p className="text-white/80">Can serve hedge funds, family offices, and high-performing desks without a tech overhaul.</p>
+              </div>
+            </motion.div>
+          </div>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.7 }}
+            viewport={{ once: true }}
+            className="text-center border-t border-white/20 pt-8"
+          >
+            <p className="text-xl md:text-2xl font-bold text-purple-200 mb-4">
+              This system delivers what others only imply:
+            </p>
+            <p className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-purple-300 to-blue-300 bg-clip-text text-transparent">
+              A clear sense of where the market is going — before it does.
+            </p>
+          </motion.div>
+        </motion.div>
+
         {/* Sample Results Section */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}

@@ -250,12 +250,18 @@ const ForecastDemo = () => {
               </button>
             </div>
             <div className="p-2">
-              <div className="bg-black/30 rounded-xl border border-white/10 overflow-hidden">
-                <img 
-                  src="/US500.png" 
-                  alt={`${agent.forecast_recaps.asset} ${agent.forecast_recaps.timeframe} Chart Analysis`}
-                  className="w-full h-auto object-contain"
-                  style={{ minHeight: '400px' }}
+              <div className="bg-black/30 rounded-xl border border-white/10 overflow-hidden" style={{ height: '600px' }}>
+                <iframe 
+                  src="/US500.html" 
+                  title={`${agent.forecast_recaps.asset} ${agent.forecast_recaps.timeframe} Interactive Chart Analysis`}
+                  className="w-full h-full border-0"
+                  style={{ 
+                    overflow: 'hidden',
+                    transform: 'scale(0.66)',
+                    transformOrigin: 'top left',
+                    width: '177%',
+                    height: '200%'
+                  }}
                 />
               </div>
             </div>
@@ -515,10 +521,17 @@ const ForecastDemo = () => {
               <X className="w-6 h-6 text-white group-hover:text-gray-300 transition-colors" />
             </button>
             <div className="w-full h-full bg-black/30 rounded-xl border border-white/20 overflow-hidden">
-              <img 
-                src="/US500.png" 
-                alt={`${agent.forecast_recaps.asset} ${agent.forecast_recaps.timeframe} Chart Analysis - Fullscreen`}
-                className="w-full h-full object-contain"
+              <iframe 
+                src="/US500.html" 
+                title={`${agent.forecast_recaps.asset} ${agent.forecast_recaps.timeframe} Interactive Chart Analysis - Fullscreen`}
+                className="w-full h-full border-0"
+                style={{ 
+                   overflow: 'hidden',
+                   transform: 'scale(1.0)',
+                   transformOrigin: 'center',
+                   width: 'auto',
+                   height: 'auto'
+                 }}
                 onClick={(e) => e.stopPropagation()}
               />
             </div>
