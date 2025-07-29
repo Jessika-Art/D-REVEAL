@@ -1,0 +1,125 @@
+{
+  "agent": {
+    "name": "Forecast Intelligence Agent",
+    "forecast_recaps": {
+      "asset": "US500",
+      "forecast_direction": "Buy",
+      "timeframe": "12H",
+      "confidence_level": "Medium"
+    },
+    "technical_analysis": {
+      "12H": {
+        "trend": "bullish",
+        "support_resistance": {
+          "support": [6400, 6280],
+          "resistance": [6550, 6620]
+        },
+        "supply_demand_zones": {
+          "demand": [6350, 6400],
+          "supply": [6550, 6600]
+        },
+        "structure": {
+          "BOS": "Break above 6400 confirmed in late July",
+          "ChOCh": "No bearish change observed post-forecast start"
+        },
+        "indicators": {
+          "cumulative_delta": "Net buying into resistance near 6550, then slowing",
+          "sentiment": "Moderately bullish based on positioning and flow",
+          "market_regime": "Late-stage trend, transitioning to distributive"
+        }
+      },
+      "6H": {
+        "trend": "mild bullish consolidation",
+        "support_resistance": {
+          "support": [6400],
+          "resistance": [6550]
+        },
+        "supply_demand_zones": {
+          "demand": [6375, 6425],
+          "supply": [6540, 6570]
+        },
+        "structure": {
+          "BOS": "Confirmed at 6450",
+          "ChOCh": "Unconfirmed"
+        },
+        "indicators": {
+          "cumulative_delta": "Flat to slightly bullish",
+          "sentiment": "Position-heavy but unaggressive",
+          "market_regime": "Sideways-to-trending"
+        }
+      },
+      "4H": {
+        "trend": "range-bound with upward bias",
+        "support_resistance": {
+          "support": [6420],
+          "resistance": [6550, 6610]
+        },
+        "supply_demand_zones": {
+          "demand": [6400, 6435],
+          "supply": [6550, 6595]
+        },
+        "structure": {
+          "BOS": "Multiple micro-BOS higher",
+          "ChOCh": "No sign of weakness"
+        },
+        "indicators": {
+          "cumulative_delta": "Decelerating buying at highs",
+          "sentiment": "Neutral-to-optimistic short-term",
+          "market_regime": "Micro-trend within range"
+        }
+      }
+    },
+    "macro_fundamentals": "US macro data remains mixed: strong labor market resilience contrasts with sticky core inflation, complicating the Fed’s dovish pivot narrative. Q2 earnings have been largely positive, supporting equity strength. Global risk sentiment has improved marginally on easing geopolitical tensions in Eastern Europe and stabilizing Chinese macro data. Treasury yields remain elevated but off recent highs, supporting risk asset appetite.",
+    "economic_calendar": [
+      {
+        "country": "United States",
+        "event": "Non-Farm Payrolls (NFP)",
+        "time": "2025-08-02T12:30:00Z",
+        "impact": "High",
+        "forecast": "205K",
+        "previous": "206K"
+      },
+      {
+        "country": "United States",
+        "event": "CPI YoY",
+        "time": "2025-08-14T12:30:00Z",
+        "impact": "High",
+        "forecast": "3.3%",
+        "previous": "3.2%"
+      },
+      {
+        "country": "United States",
+        "event": "FOMC Meeting Minutes",
+        "time": "2025-08-21T18:00:00Z",
+        "impact": "High",
+        "forecast": "N/A",
+        "previous": "N/A"
+      },
+      {
+        "country": "United States",
+        "event": "PPI Final Demand MoM",
+        "time": "2025-08-16T12:30:00Z",
+        "impact": "Medium",
+        "forecast": "0.2%",
+        "previous": "0.1%"
+      },
+      {
+        "country": "United States",
+        "event": "Retail Sales MoM",
+        "time": "2025-08-15T12:30:00Z",
+        "impact": "Medium",
+        "forecast": "0.4%",
+        "previous": "0.2%"
+      }
+    ],
+    "justification": "The AI model's Buy forecast on US500 over the next 30 days is supported by continued bullish structure on the 12H and lower timeframes. While price action enters consolidation in the upper third of the recent range, no breakdown has occurred, and the presence of rising demand zones affirms accumulation. Macro tailwinds from earnings and subdued geopolitical risk reduce downside volatility. The upcoming CPI and NFP releases may introduce volatility but are unlikely to structurally alter the uptrend unless data significantly overshoots expectations.",
+    "strategic_notes": "A sharp upside CPI or hawkish tone in FOMC minutes could temper this bullish scenario. However, strong breadth in earnings and benign financial conditions provide a supportive base. Risk-reward skews positive for swing entries on minor pullbacks, though chasing breakouts may offer reduced alpha.",
+    "summary": [
+      "US500 forecasted to continue upward over 30-day horizon (12H candles)",
+      "Moderate confidence driven by structurally intact bullish trend",
+      "Earnings season and improving global sentiment support risk assets",
+      "Watch for CPI and FOMC minutes as potential volatility catalysts",
+      "Tactical long bias favored on dips into 6400–6425 zone"
+    ]
+  }
+}

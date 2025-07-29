@@ -1,36 +1,94 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Marble Studio Replica
 
-## Getting Started
+A modern web development studio replica built with cutting-edge technologies.
 
-First, run the development server:
+## 🚀 Technologies Installed
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+### Core Framework
+- **Next.js 14.2.30** - Latest stable version with TypeScript support
+- **TypeScript** - Full type safety and modern JavaScript features
+- **React 18.3.1** - Latest React with concurrent features
+
+### Styling & UI
+- **Tailwind CSS 3.4.17** - Utility-first CSS framework for pixel-perfect styling
+- **PostCSS & Autoprefixer** - CSS processing and vendor prefixing
+- **Custom CSS utilities** - Additional styling utilities in globals.css
+
+### Animations & Interactions
+- **Framer Motion 11.11.17** - Production-ready motion library for smooth animations
+- **Custom animation utilities** - Pre-built animation classes in Tailwind config
+
+### Form Handling
+- **React Hook Form 7.53.2** - Performant, flexible forms with easy validation
+
+### Icons & Assets
+- **Lucide React** - Beautiful, customizable SVG icons
+- **Next.js Image** - Optimized image delivery with WebP and AVIF support
+
+### Development Tools
+- **ESLint** - Code linting with Next.js and TypeScript rules
+- **Inter Font** - Modern, readable Google Font
+
+## 📁 Project Structure
+
+```
+marble-studio-replica/
+├── src/
+│   ├── app/
+│   │   ├── globals.css      # Global styles with Tailwind directives
+│   │   ├── layout.tsx       # Root layout with Inter font
+│   │   └── page.tsx         # Home page
+│   └── components/          # Reusable React components
+├── public/                  # Static assets
+├── package.json            # Dependencies and scripts
+├── tsconfig.json           # TypeScript configuration
+├── tailwind.config.ts      # Tailwind CSS configuration
+├── postcss.config.mjs      # PostCSS configuration
+├── next.config.mjs         # Next.js configuration
+└── eslint.config.mjs       # ESLint configuration
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠 Available Scripts
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run dev      # Start development server
+npm run build    # Build for production
+npm run start    # Start production server
+npm run lint     # Run ESLint
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🎨 Features
 
-## Learn More
+- **Responsive Design** - Mobile-first approach with Tailwind CSS
+- **Smooth Animations** - Framer Motion integration for engaging UX
+- **Optimized Images** - Next.js Image component with modern formats
+- **Type Safety** - Full TypeScript support throughout the project
+- **Modern Fonts** - Inter font for excellent readability
+- **Icon System** - Lucide React icons for consistent UI
+- **Form Handling** - React Hook Form for efficient form management
 
-To learn more about Next.js, take a look at the following resources:
+## 🚀 Getting Started
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+2. Start the development server:
+   ```bash
+   npm run dev
+   ```
 
-## Deploy on Vercel
+3. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📦 Key Dependencies
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `next@14.2.30` - React framework
+- `react@^18.3.1` - UI library
+- `typescript@^5.7.2` - Type system
+- `tailwindcss@^3.4.17` - CSS framework
+- `framer-motion@^11.11.17` - Animation library
+- `react-hook-form@^7.53.2` - Form handling
+- `lucide-react@latest` - Icon library
+
+All packages are installed and configured for optimal development experience!
