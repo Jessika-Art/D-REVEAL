@@ -241,12 +241,15 @@ const ForecastDemo = () => {
                 <BarChart3 className="w-6 h-6 text-purple-400" />
                 Forecast Chart
               </h3>
+              
               <button
                 onClick={() => setIsChartFullscreen(true)}
-                className="p-2 hover:bg-white/10 rounded-lg transition-colors group"
+                className="flex items-center gap-2 px-3 py-2 hover:bg-white/10 rounded-lg transition-colors group"
                 title="View Fullscreen"
               >
+                <span className="text-sm text-gray-400 group-hover:text-white transition-colors">full-screen</span>
                 <Maximize2 className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors" />
+                
               </button>
             </div>
             <div className="p-2">
