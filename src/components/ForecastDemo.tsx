@@ -512,7 +512,7 @@ const ForecastDemo = () => {
           className="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 flex items-center justify-center p-4"
           onClick={() => setIsChartFullscreen(false)}
         >
-          <div className="relative w-[100%] h-full max-w-7xl max-h-full">
+          <div className="relative w-[200%] h-full max-w-[82%] max-h-[90%] pt-20">
             <button
               onClick={() => setIsChartFullscreen(false)}
               className="absolute top-4 right-4 z-10 p-3 bg-black/50 hover:bg-black/70 rounded-full transition-colors group"
@@ -528,9 +528,9 @@ const ForecastDemo = () => {
                 style={{ 
                    overflow: 'hidden',
                    transform: 'scale(1.0)',
-                   transformOrigin: 'center',
-                   width: 'auto',
-                   height: 'auto'
+                   transformOrigin: 'top left',
+                   width: '100%',
+                   height: '100%'
                  }}
                 onClick={(e) => e.stopPropagation()}
               />
