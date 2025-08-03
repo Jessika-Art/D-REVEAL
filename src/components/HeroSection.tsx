@@ -66,11 +66,27 @@ const HeroSection = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 1 }}
-        className="absolute bottom-8 right-8"
+        className="absolute bottom-8 right-8 z-50"
       >
-        <div className="w-12 h-12 border border-white/20 rounded-full flex items-center justify-center hover:border-white/40 transition-colors cursor-pointer">
-          <ChevronDown className="w-5 h-5 text-white/60" />
-        </div>
+        <button
+          className="w-12 h-12 border border-white/20 rounded-full flex items-center justify-center hover:border-white/40 transition-all duration-300 cursor-pointer group relative z-50 bg-black/20 backdrop-blur-sm"
+          onClick={() => {
+            console.log('Scroll button clicked!'); // Debug log
+            const aboutSection = document.getElementById('about');
+            if (aboutSection) {
+              const offsetTop = aboutSection.offsetTop;
+              console.log('Scrolling to:', offsetTop); // Debug log
+              window.scrollTo({
+                top: offsetTop - 80,
+                behavior: 'smooth'
+              });
+            } else {
+              console.log('About section not found!'); // Debug log
+            }
+          }}
+        >
+          <ChevronDown className="w-5 h-5 text-white/60 group-hover:text-white/80 transition-colors" />
+        </button>
       </motion.div>
     </section>
   );

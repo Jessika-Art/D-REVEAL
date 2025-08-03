@@ -256,7 +256,7 @@ const ForecastDemo = () => {
                     <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-80 bg-black/90 backdrop-blur-sm border border-white/20 rounded-lg p-4 text-sm text-white z-50">
                       <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-black/90 border-l border-t border-white/20 rotate-45"></div>
                       <p className="leading-relaxed">
-                        The first 1 to 30 candles have a higher accuracy in terms of trend, volatility, and patterns. In the last 30 candles the accuracy decreases. The model produces what is about to come sometimes 2 or 3 candles earlier or later than when the actual move take place.
+                        The first 1 to 30 candles have a higher accuracy. In the last 30 candles the accuracy decreases. The model produces what is about to come sometimes 2 or 3 candles earlier or later than when the actual move take place.
                       </p>
                       <p className="mt-2 leading-relaxed">
                         Long candles suggest high volatility.
