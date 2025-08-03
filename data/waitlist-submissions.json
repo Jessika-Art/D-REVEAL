@@ -1,0 +1,28 @@
+[
+  {
+    "id": "1754263958107",
+    "timestamp": "2025-08-03T23:32:38.107Z",
+    "fullName": "John Doe",
+    "email": "john@example.com",
+    "company": "Nexus Capital",
+    "jobTitle": "President",
+    "companyType": "Hedge Fund",
+    "aum": "$500M - $1B",
+    "primaryMarkets": [
+      "Equities",
+      "Derivatives",
+      "Forex/FX",
+      "Cryptocurrency",
+      "Commodities"
+    ],
+    "currentTools": "Bloomberg",
+    "teamSize": "Medium Team (11-50)",
+    "location": "",
+    "biggestChallenge": "Some big challenges",
+    "interestLevel": "Exploring options",
+    "budgetRange": "Over $1M annually",
+    "contactMethod": "",
+    "timeline": "",
+    "additionalNotes": "Some additional notes"
+  }
+]

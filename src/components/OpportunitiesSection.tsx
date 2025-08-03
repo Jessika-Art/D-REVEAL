@@ -155,9 +155,9 @@ const OpportunitiesSection = () => {
               viewport={{ once: true }}
               className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent mb-4"
             >
-              +180
+              Decision
             </motion.div>
-            <h4 className="text-xl font-semibold mb-2">Pips Captured</h4>
+            <h4 className="text-xl font-semibold mb-2">Immediate Impact</h4>
             <p className="text-white/70">Real performance, real results</p>
           </div>
         </motion.div>
@@ -175,18 +175,18 @@ const OpportunitiesSection = () => {
               Ready to See the Future?
             </h3>
             <p className="text-xl mb-8 opacity-90 max-w-3xl mx-auto">
-              Join the select group of institutions that trade with tomorrow's intelligence today. 
-              Limited partnerships available for qualified professionals.
+              Join the Waitlist now.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <motion.button
+              <motion.a
+                href="/waitlist"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="bg-white text-purple-600 px-8 py-4 rounded-full font-semibold text-lg hover:bg-gray-100 transition-colors inline-flex items-center gap-2"
               >
                 Request Access
                 <ArrowRight className="w-5 h-5" />
-              </motion.button>
+              </motion.a>
               <motion.a
                  href="/demo"
                  whileHover={{ scale: 1.05 }}

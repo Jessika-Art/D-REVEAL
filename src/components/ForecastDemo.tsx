@@ -1,8 +1,9 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { TrendingUp, TrendingDown, Calendar, Target, BarChart3, AlertTriangle, CheckCircle, Clock, DollarSign, Activity, Maximize2, X, Move, ZoomIn, ZoomOut, Hand, HelpCircle } from 'lucide-react';
+import { TrendingUp, TrendingDown, Calendar, Target, BarChart3, AlertTriangle, CheckCircle, Clock, DollarSign, Activity, Maximize2, X, Move, ZoomIn, ZoomOut, Hand, HelpCircle, Home, ArrowRight, Link, Check, QrCode } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import QRCode from 'qrcode';
 
 interface ForecastData {
   agent: {
@@ -58,6 +59,9 @@ const ForecastDemo = () => {
   const [loading, setLoading] = useState(true);
   const [isChartFullscreen, setIsChartFullscreen] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
+  const [urlCopied, setUrlCopied] = useState(false);
+  const [showQRCode, setShowQRCode] = useState(false);
+  const [qrCodeDataURL, setQrCodeDataURL] = useState('');
 
   useEffect(() => {
     const loadForecastData = async () => {
@@ -87,6 +91,87 @@ const ForecastDemo = () => {
 
     loadForecastData();
   }, []);
+
+  // QR Code function with logo overlay
+  const generateQRCode = async () => {
+    try {
+      const currentURL = window.location.href;
+      
+      // Generate the base QR code
+      const qrDataURL = await QRCode.toDataURL(currentURL, {
+        width: 300,
+        margin: 2,
+        color: {
+          dark: '#000000',
+          light: '#FFFFFF'
+        },
+        errorCorrectionLevel: 'M' // Medium error correction to allow for logo overlay
+      });
+
+      // Create a canvas to add the logo overlay
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      const qrImage = new Image();
+
+      qrImage.onload = () => {
+        canvas.width = qrImage.width;
+        canvas.height = qrImage.height;
+        
+        // Draw the QR code
+        ctx.drawImage(qrImage, 0, 0);
+        
+        // Create logo overlay in the center
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+        const logoSize = 60; // Size of the logo area
+        
+        // Draw white background for logo
+        ctx.fillStyle = '#000000';
+        ctx.fillRect(centerX - logoSize/2, centerY - logoSize/2, logoSize, logoSize);
+        
+        // Draw border around logo area
+        ctx.strokeStyle = '#000000';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(centerX - logoSize/2, centerY - logoSize/2, logoSize, logoSize);
+        
+        // Draw the logo text "[ : : ]"
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = 'bold 26px monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('[::]', centerX, centerY);
+        
+        // Convert canvas to data URL
+        const finalDataURL = canvas.toDataURL('image/png');
+        setQrCodeDataURL(finalDataURL);
+        setShowQRCode(true);
+      };
+
+      qrImage.src = qrDataURL;
+    } catch (error) {
+      console.error('Error generating QR code:', error);
+      alert('Error generating QR code. Please try again.');
+    }
+  };
+
+  const copyURL = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      setUrlCopied(true);
+      setTimeout(() => setUrlCopied(false), 2000);
+    } catch (error) {
+      console.error('Error copying URL:', error);
+      // Fallback for older browsers
+      const textArea = document.createElement('textarea');
+      textArea.value = window.location.href;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      setUrlCopied(true);
+      setTimeout(() => setUrlCopied(false), 2000);
+    }
+  };
 
   if (loading) {
     return (
@@ -156,7 +241,8 @@ const ForecastDemo = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-blue-900 text-white">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-black text-white relative overflow-hidden">
+
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -50 }}
@@ -165,6 +251,82 @@ const ForecastDemo = () => {
         className="bg-black/20 backdrop-blur-sm border-b border-white/10"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          {/* Navigation - Fully Responsive */}
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4 mb-8">
+            {/* Main Navigation Buttons */}
+            <div className="flex flex-col xs:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
+              <motion.a
+                href="/"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="flex items-center justify-center gap-2 px-4 sm:px-6 py-3 bg-white/10 hover:bg-white/20 border border-white/20 rounded-full font-medium transition-all backdrop-blur-sm text-sm sm:text-base w-full xs:w-auto"
+              >
+                <Home className="w-4 h-4" />
+                <span className="hidden xs:inline">Return to Home</span>
+                <span className="xs:hidden">Home</span>
+              </motion.a>
+              <motion.a
+                href="/waitlist"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="flex items-center justify-center gap-2 px-4 sm:px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 rounded-full font-medium transition-all text-sm sm:text-base w-full xs:w-auto"
+              >
+                <span className="hidden xs:inline">Request Access</span>
+                <span className="xs:hidden">Access</span>
+                <ArrowRight className="w-4 h-4" />
+              </motion.a>
+            </div>
+            
+            {/* Share Features - Responsive positioning */}
+            <div className="flex gap-2 sm:gap-3 w-full sm:w-auto sm:ml-4">
+              <motion.button
+                onClick={generateQRCode}
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="flex items-center justify-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/30 rounded-lg text-xs sm:text-sm font-medium transition-all backdrop-blur-sm flex-1 sm:flex-none"
+                title="Generate QR Code"
+              >
+                <QrCode className="w-4 h-4" />
+                <span className="hidden xs:inline">QR Code</span>
+                <span className="xs:hidden">QR</span>
+              </motion.button>
+
+              <motion.button
+                onClick={copyURL}
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.45 }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="flex items-center justify-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 bg-purple-600/20 hover:bg-purple-600/30 border border-purple-500/30 rounded-lg text-xs sm:text-sm font-medium transition-all backdrop-blur-sm flex-1 sm:flex-none"
+                title="Copy Page URL"
+              >
+                {urlCopied ? (
+                  <>
+                    <Check className="w-4 h-4 text-green-400" />
+                    <span className="text-green-400 hidden xs:inline">Copied!</span>
+                    <span className="text-green-400 xs:hidden">✓</span>
+                  </>
+                ) : (
+                  <>
+                    <Link className="w-4 h-4" />
+                    <span className="hidden xs:inline">Copy URL</span>
+                    <span className="xs:hidden">Copy</span>
+                  </>
+                )}
+              </motion.button>
+            </div>
+          </div>
+
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-3xl md:text-4xl font-bold">Forecast Report</h1>
@@ -182,6 +344,7 @@ const ForecastDemo = () => {
               <div className="text-right">
                 <div className="text-sm text-gray-300">Generated</div>
                 <div className="text-lg font-semibold">{agent.date}</div>
+                <div className="text-sm text-gray-500">mm/dd/yyyy</div>
               </div>
             </div>
           </div>
@@ -570,6 +733,45 @@ const ForecastDemo = () => {
               />
             </div>
           </div>
+        </motion.div>
+      )}
+
+      {/* QR Code Modal */}
+      {showQRCode && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
+          onClick={() => setShowQRCode(false)}
+        >
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.8, opacity: 0 }}
+            className="bg-white rounded-lg p-6 max-w-sm mx-4 text-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">
+              Scan QR Code
+            </h3>
+            {qrCodeDataURL && (
+              <img
+                src={qrCodeDataURL}
+                alt="QR Code"
+                className="mx-auto mb-4 rounded-lg"
+              />
+            )}
+            <p className="text-sm text-gray-600 mb-4">
+              Scan this QR code to open this page on another device
+            </p>
+            <button
+              onClick={() => setShowQRCode(false)}
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              Close
+            </button>
+          </motion.div>
         </motion.div>
       )}
     </div>

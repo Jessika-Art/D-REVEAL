@@ -17,12 +17,12 @@ const Navigation = () => {
   }, []);
 
   const navItems = [
-    { name: 'ALGORITHM', href: '#about' },
-    { name: 'SERVICES', href: '#companies' },
-    { name: 'PERFORMANCE', href: '#how-it-works' },
-    { name: 'PARTNERSHIPS', href: '#opportunities' },
-    { name: 'INVESTMENT', href: '#careers' },
-    { name: 'CONTACT', href: '#community' },
+    { name: 'WHAT', href: '#about' },
+    // { name: 'SERVICES', href: '#companies' },
+    { name: 'SERVICES', href: '#how-it-works' },
+    { name: 'WHY', href: '#opportunities' },
+    // { name: 'INVESTMENT', href: '#careers' },
+    // { name: 'CONTACT', href: '#community' },
   ];
 
   return (
@@ -63,7 +63,8 @@ const Navigation = () => {
           </div>
 
           {/* Apply Button */}
-          <motion.button
+          <motion.a
+            href="/waitlist"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.6 }}
@@ -71,7 +72,7 @@ const Navigation = () => {
           >
             GET STARTED
             <ArrowRight className="w-4 h-4" />
-          </motion.button>
+          </motion.a>
 
           {/* Mobile and Tablet Menu Button */}
           <button
@@ -101,10 +102,14 @@ const Navigation = () => {
               </a>
             ))}
             <div className="px-4 pt-2">
-              <button className="w-full bg-white text-black px-6 py-3 rounded-full font-medium hover:bg-gray-100 flex items-center justify-center gap-2 text-sm tracking-wide">
+              <a 
+                href="/waitlist"
+                onClick={() => setIsOpen(false)}
+                className="w-full bg-white text-black px-6 py-3 rounded-full font-medium hover:bg-gray-100 flex items-center justify-center gap-2 text-sm tracking-wide"
+              >
                 GET STARTED
                 <ArrowRight className="w-4 h-4" />
-              </button>
+              </a>
             </div>
           </motion.div>
         )}
