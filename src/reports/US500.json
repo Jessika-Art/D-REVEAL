@@ -1,8 +1,9 @@
 {
   "agent": {
+    "date": "7/27/2005",
     "name": "Forecast Intelligence Agent",
     "forecast_recaps": {
-      "asset": "US500",
+      "asset": "S&P500",
       "forecast_direction": "Buy",
       "timeframe": "12H",
       "confidence_level": "Medium"

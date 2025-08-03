@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { TrendingUp, TrendingDown, Calendar, Target, BarChart3, AlertTriangle, CheckCircle, Clock, DollarSign, Activity, Maximize2, X } from 'lucide-react';
+import { TrendingUp, TrendingDown, Calendar, Target, BarChart3, AlertTriangle, CheckCircle, Clock, DollarSign, Activity, Maximize2, X, Move, ZoomIn, ZoomOut, Hand, HelpCircle } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 interface ForecastData {
@@ -57,6 +57,7 @@ const ForecastDemo = () => {
   const [forecastData, setForecastData] = useState<ForecastData | null>(null);
   const [loading, setLoading] = useState(true);
   const [isChartFullscreen, setIsChartFullscreen] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
 
   useEffect(() => {
     const loadForecastData = async () => {
@@ -180,7 +181,7 @@ const ForecastDemo = () => {
               </div>
               <div className="text-right">
                 <div className="text-sm text-gray-300">Generated</div>
-                <div className="text-lg font-semibold">{new Date().toLocaleDateString()}</div>
+                <div className="text-lg font-semibold">{agent.date}</div>
               </div>
             </div>
           </div>
@@ -242,31 +243,69 @@ const ForecastDemo = () => {
                 Forecast Chart
               </h3>
               
-              <button
-                onClick={() => setIsChartFullscreen(true)}
-                className="flex items-center gap-2 px-3 py-2 hover:bg-white/10 rounded-lg transition-colors group"
-                title="View Fullscreen"
-              >
-                <span className="text-sm text-gray-400 group-hover:text-white transition-colors">full-screen</span>
-                <Maximize2 className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors" />
-                
-              </button>
+              <div className="flex items-center gap-2">
+                <div className="relative">
+                  <button
+                    onMouseEnter={() => setShowTooltip(true)}
+                    onMouseLeave={() => setShowTooltip(false)}
+                    className="p-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors"
+                  >
+                    <HelpCircle className="w-4 h-4 text-blue-400" />
+                  </button>
+                  {showTooltip && (
+                    <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-80 bg-black/90 backdrop-blur-sm border border-white/20 rounded-lg p-4 text-sm text-white z-50">
+                      <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-black/90 border-l border-t border-white/20 rotate-45"></div>
+                      <p className="leading-relaxed">
+                        The first 1 to 30 candles have a higher accuracy in terms of trend, volatility, and patterns. In the last 30 candles the accuracy decreases. The model produces what is about to come sometimes 2 or 3 candles earlier or later than when the actual move take place.
+                      </p>
+                      <p className="mt-2 leading-relaxed">
+                        Long candles suggest high volatility.
+                      </p>
+                    </div>
+                  )}
+                </div>
+                <button
+                  onClick={() => setIsChartFullscreen(true)}
+                  className="flex items-center gap-2 px-3 py-2 hover:bg-white/10 rounded-lg transition-colors group"
+                  title="View Fullscreen"
+                >
+                  <span className="text-sm text-gray-400 group-hover:text-white transition-colors">full-screen</span>
+                  <Maximize2 className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors" />
+                  
+                </button>
+              </div>
             </div>
             <div className="p-2">
-              <div className="bg-black/30 rounded-xl border border-white/10 overflow-hidden" style={{ height: '600px' }}>
-                <iframe 
-                  src="/US500.html" 
-                  title={`${agent.forecast_recaps.asset} ${agent.forecast_recaps.timeframe} Interactive Chart Analysis`}
-                  className="w-full h-full border-0"
-                  style={{ 
-                    overflow: 'hidden',
-                    transform: 'scale(0.66)',
-                    transformOrigin: 'top left',
-                    width: '177%',
-                    height: '200%'
-                  }}
+              <div className="bg-black/30 rounded-xl border border-white/10 relative" style={{ height: '600px' }}>
+                <img 
+                  src="/US500.png" 
+                  alt={`${agent.forecast_recaps.asset} ${agent.forecast_recaps.timeframe} Forecast Chart`}
+                  className="w-full h-full object-contain rounded-xl"
                 />
               </div>
+            </div>
+            
+            {/* Chart Info - moved outside */}
+            <div className="px-2 pb-2">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 1 }}
+                className="bg-black/50 backdrop-blur-sm rounded-lg p-3 border border-white/20"
+              >
+                <div className="flex items-center justify-between text-xs text-gray-300">
+                  <div className="flex items-center gap-2">
+                    <BarChart3 className="w-4 h-4 text-purple-400" />
+                    <span>Static forecast chart view</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-1">
+                      <Maximize2 className="w-3 h-3 text-blue-400" />
+                      <span>Click fullscreen for larger view</span>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
             </div>
           </div>
         </motion.div>
@@ -523,19 +562,11 @@ const ForecastDemo = () => {
             >
               <X className="w-6 h-6 text-white group-hover:text-gray-300 transition-colors" />
             </button>
-            <div className="w-full h-full bg-black/30 rounded-xl border border-white/20 overflow-hidden">
-              <iframe 
-                src="/US500.html" 
-                title={`${agent.forecast_recaps.asset} ${agent.forecast_recaps.timeframe} Interactive Chart Analysis - Fullscreen`}
-                className="w-full h-full border-0"
-                style={{ 
-                   overflow: 'hidden',
-                   transform: 'scale(1.0)',
-                   transformOrigin: 'top left',
-                   width: '100%',
-                   height: '100%'
-                 }}
-                onClick={(e) => e.stopPropagation()}
+            <div className="w-full h-full bg-black/30 rounded-xl border border-white/20">
+              <img 
+                src="/US500.png" 
+                alt={`${agent.forecast_recaps.asset} ${agent.forecast_recaps.timeframe} Forecast Chart - Fullscreen`}
+                className="w-full h-full object-contain rounded-xl"
               />
             </div>
           </div>

@@ -263,7 +263,7 @@ const CompaniesSection = () => {
         </motion.div>
 
         {/* Sample Results Section */}
-        <motion.div
+        {/* <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
@@ -281,9 +281,9 @@ const CompaniesSection = () => {
               viewport={{ once: true }}
               className="bg-white/10 backdrop-blur-sm p-6 rounded-2xl"
             >
-              <div className="text-3xl font-bold mb-2">+180 Pips</div>
-              <div className="text-lg opacity-90">EURUSD Movement</div>
-              <div className="text-sm opacity-75 mt-2">4H Timeframe Forecast</div>
+              <div className="text-3xl font-bold mb-2">US500</div>
+              <div className="text-lg opacity-90">Clear Trend Direction</div>
+              <div className="text-sm opacity-75 mt-2">Any Timeframe</div>
             </motion.div>
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
@@ -292,9 +292,9 @@ const CompaniesSection = () => {
               viewport={{ once: true }}
               className="bg-white/10 backdrop-blur-sm p-6 rounded-2xl"
             >
-              <div className="text-3xl font-bold mb-2">100%</div>
-              <div className="text-lg opacity-90">Within Confidence Zone</div>
-              <div className="text-sm opacity-75 mt-2">Precision Targeting</div>
+              <div className="text-3xl font-bold mb-2">1 Hour to 30 Days</div>
+              <div className="text-lg opacity-90">Forecast Horizon</div>
+              <div className="text-sm opacity-75 mt-2">Forward-Looking</div>
             </motion.div>
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
@@ -303,15 +303,15 @@ const CompaniesSection = () => {
               viewport={{ once: true }}
               className="bg-white/10 backdrop-blur-sm p-6 rounded-2xl"
             >
-              <div className="text-3xl font-bold mb-2">60 candles</div>
-              <div className="text-lg opacity-90">Advance Notice</div>
-              <div className="text-sm opacity-75 mt-2">Before Market Move</div>
+              <div className="text-3xl font-bold mb-2">Economic Calendar</div>
+              <div className="text-lg opacity-90">Price Zones</div>
+              <div className="text-sm opacity-75 mt-2">Support & Resistance</div>
             </motion.div>
           </div>
           <p className="text-xl opacity-90 max-w-3xl mx-auto">
-            Real forecasting performance from institutional clients. Results that speak louder than promises.
+            Real forecasting intelligence with multi-timeframe analysis, confidence levels, and precise price targets.
           </p>
-        </motion.div>
+        </motion.div> */}
       </div>
     </section>
   );

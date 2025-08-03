@@ -27,7 +27,7 @@ const AboutSection = () => {
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="space-y-8"
+            className="space-y-8 text-center lg:text-left"
           >
             <div>
               <h3 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
@@ -47,41 +47,7 @@ const AboutSection = () => {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {/* <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-                viewport={{ once: true }}
-                className="text-center p-6 bg-white rounded-xl shadow-lg border border-gray-100"
-              >
-                <div className="text-3xl font-bold text-purple-600 mb-2">+180</div>
-                <div className="text-sm text-gray-600">Pips EURUSD</div>
-                <div className="text-xs text-gray-500 mt-1">July 8 Forecast</div>
-              </motion.div> */}
-              {/* <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                viewport={{ once: true }}
-                className="text-center p-6 bg-white rounded-xl shadow-lg border border-gray-100"
-              >
-                <div className="text-3xl font-bold text-blue-600 mb-2">100%</div>
-                <div className="text-sm text-gray-600">Within Zone</div>
-                <div className="text-xs text-gray-500 mt-1">Confidence Range</div>
-              </motion.div>
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-                viewport={{ once: true }}
-                className="text-center p-6 bg-white rounded-xl shadow-lg border border-gray-100"
-              >
-                <div className="text-3xl font-bold text-cyan-600 mb-2">4H</div>
-                <div className="text-sm text-gray-600">Timeframe</div>
-                <div className="text-xs text-gray-500 mt-1">Multi-Frame</div>
-              </motion.div> */}
-            </div>
+
           </motion.div>
 
           <motion.div
@@ -99,7 +65,7 @@ const AboutSection = () => {
               {/* Main container with subtle background */}
               <div className="relativebg-gradient-to-br from-gray-900/50 to-black/50 backdrop-blur-sm rounded-2xl p-8 w-full h-full flex items-center justify-center">
                 {/* Python List Syntax */}
-                <div className="text-4xl md:text-[12rem] font-mono text-cyan-400 flex items-center justify-center gap-14">
+                <div className="text-[8rem] sm:text-10xl md:text-[12rem] font-mono text-cyan-400 flex items-center justify-center gap-4 sm:gap-8 md:gap-14">
                   {/* Opening bracket */}
                   <motion.span
                     initial={{ opacity: 0, x: -20 }}
@@ -111,7 +77,7 @@ const AboutSection = () => {
                   </motion.span>
                   
                   {/* Dots representing list items in 2x2 grid with Matrix effect */}
-                  <div className="relative grid grid-cols-2 gap-[6rem] mt-6">
+                  <div className="relative grid grid-cols-2 gap-8 sm:gap-6 md:gap-[6rem] mt-6">
                     {/* Matrix-style scrolling code background */}
                     <div className="absolute inset-0 overflow-hidden pointer-events-none">
                       {/* Vertical code streams */}

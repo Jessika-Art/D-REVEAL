@@ -6,7 +6,7 @@ const Footer = () => {
   return (
     <footer className="bg-black text-white py-16">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center md:text-left">
           {/* Logo and Description */}
           <div className="md:col-span-1">
             <h3 className="text-2xl font-bold mb-4">[::] D-REVEAL</h3>
@@ -49,11 +49,11 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+        <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center text-center md:text-left">
           <p className="text-gray-400 text-sm">
             © 2025 D-REVEAL. All rights reserved.
           </p>
-          <div className="flex space-x-6 mt-4 md:mt-0">
+          <div className="flex justify-center space-x-6 mt-4 md:mt-0">
             {/* <a href="#" className="text-gray-400 hover:text-white transition-colors">
               <span className="sr-only">Twitter</span>
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
