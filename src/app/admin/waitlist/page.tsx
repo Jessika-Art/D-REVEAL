@@ -176,6 +176,13 @@ const WaitlistAdminPage = () => {
               </p>
             </div>
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-4">
+              <Link
+                href="/admin/reports"
+                className="flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-700 text-white px-3 sm:px-4 py-2 rounded-lg transition-colors text-sm sm:text-base"
+              >
+                <FileText className="w-4 h-4" />
+                <span className="sm:inline">Reports</span>
+              </Link>
               <button
                 onClick={fetchSubmissions}
                 className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-3 sm:px-4 py-2 rounded-lg transition-colors text-sm sm:text-base"
