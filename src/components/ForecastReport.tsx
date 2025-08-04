@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { TrendingUp, TrendingDown, Calendar, Target, BarChart3, AlertTriangle, CheckCircle, Clock, DollarSign, Activity, Maximize2, X, Move, ZoomIn, ZoomOut, Hand, HelpCircle, Home, ArrowRight, Link, Check, QrCode } from 'lucide-react';
+import { TrendingUp, TrendingDown, Calendar, Target, BarChart3, AlertTriangle, CheckCircle, Clock, DollarSign, Activity, Maximize2, X, Move, ZoomIn, ZoomOut, Hand, HelpCircle, Home, ArrowRight, Link, Check, QrCode, Brain, FileText } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import QRCode from 'qrcode';
 
@@ -172,15 +172,70 @@ const ForecastReport = ({ clientName, generatedDate, chartUrl, reportData }: For
     }
   };
 
+  // Format date from ISO string to dd/mm/yyyy
+  const formatDate = (dateString: string) => {
+    try {
+      const date = new Date(dateString);
+      const day = date.getDate().toString().padStart(2, '0');
+      const month = (date.getMonth() + 1).toString().padStart(2, '0');
+      const year = date.getFullYear();
+      return `${day}/${month}/${year}`;
+    } catch (error) {
+      return dateString; // Return original if parsing fails
+    }
+  };
+
   // Handle different data structures safely
   const forecast = reportData.forecast || reportData.agent?.forecast_recaps;
   const direction = forecast?.direction || forecast?.forecast_direction || 'Unknown';
   const asset = forecast?.asset || 'Unknown Asset';
   const timeframe = forecast?.timeframe || 'Unknown';
-  const duration = forecast?.duration || 'Unknown';
-  const confidence = forecast?.confidence || forecast?.confidence_level || 0;
   
-  // Convert confidence level text to number if needed
+  // Calculate duration based on timeframe * 60 candles
+  const calculateDuration = () => {
+    const timeframeStr = forecast?.timeframe || timeframe;
+    if (!timeframeStr || timeframeStr === 'Unknown') return 'Unknown';
+    
+    // Parse timeframe (e.g., "12H", "4H", "15min", "1D")
+    const timeframeMatch = timeframeStr.match(/^(\d+)(min|H|D)$/i);
+    if (!timeframeMatch) return 'Unknown';
+    
+    const value = parseInt(timeframeMatch[1]);
+    const unit = timeframeMatch[2].toLowerCase();
+    
+    // Calculate total time for 60 candles
+    let totalMinutes = 0;
+    
+    switch (unit) {
+      case 'min':
+        totalMinutes = value * 60; // 60 candles
+        break;
+      case 'h':
+        totalMinutes = value * 60 * 60; // Convert hours to minutes, then multiply by 60 candles
+        break;
+      case 'd':
+        totalMinutes = value * 24 * 60 * 60; // Convert days to minutes, then multiply by 60 candles
+        break;
+      default:
+        return 'Unknown';
+    }
+    
+    // Convert to appropriate display unit
+    if (totalMinutes < 60) {
+      return `${totalMinutes} minutes`;
+    } else if (totalMinutes < 1440) { // Less than 24 hours
+      const hours = Math.round(totalMinutes / 60);
+      return `${hours} hour${hours !== 1 ? 's' : ''}`;
+    } else {
+      const days = Math.round(totalMinutes / 1440);
+      return `${days} day${days !== 1 ? 's' : ''}`;
+    }
+  };
+  
+  const duration = calculateDuration();
+  const confidence = forecast?.confidence || forecast?.confidence_level || 'Unknown';
+  
+  // Convert confidence level text to number if needed for progress bar
   const confidenceNumber = typeof confidence === 'string' ? 
     (confidence.toLowerCase() === 'high' ? 85 : confidence.toLowerCase() === 'medium' ? 65 : 45) : 
     confidence;
@@ -189,7 +244,17 @@ const ForecastReport = ({ clientName, generatedDate, chartUrl, reportData }: For
   const technicalAnalysis = reportData.technical_analysis || reportData.agent?.technical_analysis || {};
   
   // Handle economic calendar data structure
-  const economicCalendar = reportData.economic_calendar || reportData.agent?.economic_calendar || [];
+  // Sort economic calendar by date (nearest dates first) and ensure it's an array
+  const economicCalendar = (reportData.economic_calendar || reportData.agent?.economic_calendar || [])
+    .sort((a: any, b: any) => {
+      try {
+        const dateA = new Date(a.time);
+        const dateB = new Date(b.time);
+        return dateA.getTime() - dateB.getTime(); // Ascending order (nearest dates first)
+      } catch (error) {
+        return 0; // Keep original order if dates can't be parsed
+      }
+    });
   
   // Handle macro fundamentals data structure
   const macroFundamentals = reportData.macro_fundamentals || {
@@ -276,35 +341,6 @@ const ForecastReport = ({ clientName, generatedDate, chartUrl, reportData }: For
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           {/* Navigation - Fully Responsive */}
           <div className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4 mb-8">
-            {/* Main Navigation Buttons */}
-            <div className="flex flex-col xs:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
-              <motion.a
-                href="/"
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="flex items-center justify-center gap-2 px-4 sm:px-6 py-3 bg-white/10 hover:bg-white/20 border border-white/20 rounded-full font-medium transition-all backdrop-blur-sm text-sm sm:text-base w-full xs:w-auto"
-              >
-                <Home className="w-4 h-4" />
-                <span className="hidden xs:inline">Return to Home</span>
-                <span className="xs:hidden">Home</span>
-              </motion.a>
-              <motion.a
-                href="/waitlist"
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="flex items-center justify-center gap-2 px-4 sm:px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 rounded-full font-medium transition-all text-sm sm:text-base w-full xs:w-auto"
-              >
-                <span className="hidden xs:inline">Request Access</span>
-                <span className="xs:hidden">Access</span>
-                <ArrowRight className="w-4 h-4" />
-              </motion.a>
-            </div>
             
             {/* Share Features - Responsive positioning */}
             <div className="flex gap-2 sm:gap-3 w-full sm:w-auto sm:ml-4">
@@ -367,7 +403,7 @@ const ForecastReport = ({ clientName, generatedDate, chartUrl, reportData }: For
               <div className="text-right">
                 <div className="text-sm text-gray-300">Generated</div>
                 <div className="text-lg font-semibold">{generatedDate}</div>
-                <div className="text-sm text-gray-500">mm/dd/yyyy</div>
+                <div className="text-sm text-gray-500">dd/mm/yyyy</div>
               </div>
             </div>
           </div>
@@ -406,7 +442,7 @@ const ForecastReport = ({ clientName, generatedDate, chartUrl, reportData }: For
               <div className="text-sm text-gray-300 mb-2">Confidence</div>
               <div className="flex items-center justify-center">
                 <span className={`px-4 py-2 rounded-full text-white font-bold ${getConfidenceColor(confidenceNumber)}`}>
-                  {getConfidenceLevel(confidenceNumber)} ({typeof confidence === 'string' ? confidence : `${confidenceNumber}%`})
+                  {typeof confidence === 'string' ? confidence : `${confidenceNumber}%`}
                 </span>
               </div>
             </div>
@@ -610,19 +646,23 @@ const ForecastReport = ({ clientName, generatedDate, chartUrl, reportData }: For
                     <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Event</th>
                     <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Impact</th>
                     <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Forecast</th>
+                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Previous</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-white/10">
                   {economicCalendar.map((event, index) => (
                     <tr key={index} className="hover:bg-white/5 transition-colors">
-                      <td className="px-6 py-4 text-sm text-white">{event.date || event.time || 'N/A'}</td>
+                      <td className="px-6 py-4 text-sm text-white">
+                        {event.time ? formatDate(event.time) : (event.date ? formatDate(event.date) : 'N/A')}
+                      </td>
                       <td className="px-6 py-4 text-sm text-white">{event.event || 'N/A'}</td>
                       <td className="px-6 py-4">
                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${getImpactColor(event.impact || 'low')}`}>
                           {event.impact || 'N/A'}
                         </span>
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-300">{event.forecast || event.previous || 'N/A'}</td>
+                      <td className="px-6 py-4 text-sm text-blue-300">{event.forecast || 'N/A'}</td>
+                      <td className="px-6 py-4 text-sm text-gray-400">{event.previous || 'N/A'}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -631,77 +671,85 @@ const ForecastReport = ({ clientName, generatedDate, chartUrl, reportData }: For
           </div>
         </motion.div>
 
-        {/* Macro Fundamentals */}
+        {/* Analysis Sections */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+          {/* Macro Fundamentals */}
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.5 }}
+            className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10"
+          >
+            <h3 className="text-xl font-bold mb-4 flex items-center gap-3">
+              <DollarSign className="w-6 h-6 text-purple-400" />
+              Macro Fundamentals
+            </h3>
+            <p className="text-gray-300 leading-relaxed">{macroFundamentals.economic_outlook}</p>
+          </motion.div>
+
+          {/* Strategic Notes */}
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10"
+          >
+            <h3 className="text-xl font-bold mb-4 flex items-center gap-3">
+              <Target className="w-6 h-6 text-purple-400" />
+              Strategic Notes
+            </h3>
+            <p className="text-gray-300 leading-relaxed">{strategicNotes.entry_strategy}</p>
+          </motion.div>
+        </div>
+
+        {/* AI Model Justification */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
-          className="mb-8"
+          transition={{ duration: 0.8, delay: 0.7 }}
+          className="bg-gradient-to-r from-purple-500/20 to-blue-500/20 backdrop-blur-sm rounded-2xl p-8 border border-purple-300/30 mb-8"
         >
-          <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
-            <DollarSign className="w-8 h-8 text-purple-400" />
-            Macro Fundamentals
-          </h2>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
-              <h3 className="text-lg font-bold mb-3 text-purple-300">Economic Outlook</h3>
-              <p className="text-gray-300 leading-relaxed">{macroFundamentals.economic_outlook}</p>
-            </div>
-            <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
-              <h3 className="text-lg font-bold mb-3 text-purple-300">Market Sentiment</h3>
-              <p className="text-gray-300 leading-relaxed">{macroFundamentals.market_sentiment}</p>
-            </div>
-            <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
-              <h3 className="text-lg font-bold mb-3 text-purple-300">Risk Factors</h3>
-              {macroFundamentals.risk_factors && macroFundamentals.risk_factors.length > 0 ? (
-                <ul className="space-y-2">
-                  {macroFundamentals.risk_factors.map((factor, index) => (
-                    <li key={index} className="flex items-start gap-2 text-gray-300">
-                      <AlertTriangle className="w-4 h-4 text-yellow-400 mt-0.5 flex-shrink-0" />
-                      <span className="text-sm">{factor}</span>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="text-gray-300 leading-relaxed">No specific risk factors identified.</p>
-              )}
-            </div>
-          </div>
+          <h3 className="text-2xl font-bold mb-4 flex items-center gap-3">
+            <Activity className="w-8 h-8 text-purple-400" />
+            AI Model Justification
+          </h3>
+          <p className="text-gray-200 leading-relaxed text-lg">
+            {reportData?.agent?.justification || 'No justification data available'}
+          </p>
         </motion.div>
 
-        {/* Strategic Notes */}
+        {/* Executive Summary */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          className="mb-8"
+          transition={{ duration: 0.8, delay: 0.8 }}
+          className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 mb-8"
         >
-          <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
-            <Target className="w-8 h-8 text-purple-400" />
-            Strategic Notes
-          </h2>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
-              <h3 className="text-lg font-bold mb-3 text-green-300 flex items-center gap-2">
-                <CheckCircle className="w-5 h-5" />
-                Entry Strategy
-              </h3>
-              <p className="text-gray-300 leading-relaxed">{strategicNotes.entry_strategy}</p>
-            </div>
-            <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
-              <h3 className="text-lg font-bold mb-3 text-yellow-300 flex items-center gap-2">
-                <AlertTriangle className="w-5 h-5" />
-                Risk Management
-              </h3>
-              <p className="text-gray-300 leading-relaxed">{strategicNotes.risk_management}</p>
-            </div>
-            <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
-              <h3 className="text-lg font-bold mb-3 text-red-300 flex items-center gap-2">
-                <Target className="w-5 h-5" />
-                Exit Strategy
-              </h3>
-              <p className="text-gray-300 leading-relaxed">{strategicNotes.exit_strategy}</p>
-            </div>
+          <h3 className="text-2xl font-bold mb-6 flex items-center gap-3">
+            <CheckCircle className="w-8 h-8 text-green-400" />
+            Executive Summary
+          </h3>
+          <div className="space-y-3">
+            {Array.isArray(reportData?.agent?.summary) ? (
+              reportData.agent.summary.map((point, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6, delay: 0.9 + index * 0.1 }}
+                  className="flex items-start gap-3"
+                >
+                  <div className="flex-shrink-0 w-6 h-6 bg-green-400 rounded-full flex items-center justify-center mt-0.5">
+                    <span className="text-green-900 text-sm font-bold">✓</span>
+                  </div>
+                  <p className="text-gray-200 leading-relaxed">{point}</p>
+                </motion.div>
+              ))
+            ) : (
+              <p className="text-gray-200 leading-relaxed">
+                {reportData?.agent?.summary || 'No summary data available'}
+              </p>
+            )}
           </div>
         </motion.div>
 
@@ -719,7 +767,7 @@ const ForecastReport = ({ clientName, generatedDate, chartUrl, reportData }: For
               className="h-8 w-auto opacity-70"
             />
             <div className="text-sm text-gray-400">
-              Powered by {reportData.agent.name} v{reportData.agent.version} ({reportData.agent.model})
+              Advance Forecasting
             </div>
           </div>
           <p className="text-xs text-gray-500">
