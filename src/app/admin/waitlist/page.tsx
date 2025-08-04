@@ -21,6 +21,8 @@ import {
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import SessionStatus from '@/components/SessionStatus';
+import { useSessionTimeout } from '@/hooks/useSessionTimeout';
+import SessionTimeoutWarning from '@/components/SessionTimeoutWarning';
 
 interface WaitlistSubmission {
   id: string;
@@ -46,7 +48,48 @@ const WaitlistAdminPage = () => {
   const [selectedSubmission, setSelectedSubmission] = useState<WaitlistSubmission | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  
+  // Session timeout state
+  const [showTimeoutWarning, setShowTimeoutWarning] = useState(false);
+  const [timeRemaining, setTimeRemaining] = useState(0);
+  
   const router = useRouter();
+
+  // Session timeout handlers
+  const handleSessionWarning = (remaining: number) => {
+    setTimeRemaining(remaining);
+    setShowTimeoutWarning(true);
+  };
+
+  const handleSessionTimeout = () => {
+    setShowTimeoutWarning(false);
+    setIsAuthenticated(false);
+    router.push('/admin/login');
+  };
+
+  const handleExtendSession = async () => {
+    try {
+      const response = await fetch('/api/auth', {
+        credentials: 'include'
+      });
+      const data = await response.json();
+      
+      if (data.authenticated) {
+        setShowTimeoutWarning(false);
+      } else {
+        handleSessionTimeout();
+      }
+    } catch (error) {
+      console.error('Failed to extend session:', error);
+      handleSessionTimeout();
+    }
+  };
+
+  // Initialize session timeout monitoring
+  const { refreshSession } = useSessionTimeout({
+    onWarning: handleSessionWarning,
+    onTimeout: handleSessionTimeout
+  });
 
   const fetchSubmissions = async () => {
     try {
@@ -529,6 +572,15 @@ const WaitlistAdminPage = () => {
             </div>
           </motion.div>
         </div>
+      )}
+
+      {/* Session Timeout Warning */}
+      {showTimeoutWarning && (
+        <SessionTimeoutWarning
+          timeRemaining={timeRemaining}
+          onExtendSession={handleExtendSession}
+          onLogout={handleLogout}
+        />
       )}
     </div>
   );

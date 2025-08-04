@@ -86,25 +86,41 @@ export async function GET() {
       );
     }
 
-    // Validate session token
-    const tokenData = Buffer.from(sessionToken.value, 'base64').toString();
-    const [username, timestamp] = tokenData.split(':');
-    const tokenAge = Date.now() - parseInt(timestamp);
-    const maxAge = 60 * 60 * 24 * 1000; // 24 hours in milliseconds
+    // Validate session token using the new session format
+    try {
+      const sessionData = JSON.parse(Buffer.from(sessionToken.value, 'base64').toString());
+      const now = Date.now();
+      
+      // Check if session is valid and not expired
+      if (!sessionData.username || !sessionData.expiresAt || now > sessionData.expiresAt) {
+        return NextResponse.json(
+          { success: false, message: 'Invalid or expired session' },
+          { status: 401 }
+        );
+      }
 
-    if (username !== (process.env.ADMIN_USERNAME || 'admin') || tokenAge >= maxAge) {
+      // Verify username matches
+      if (sessionData.username !== (process.env.ADMIN_USERNAME || 'admin')) {
+        return NextResponse.json(
+          { success: false, message: 'Invalid session' },
+          { status: 401 }
+        );
+      }
+
+      // Session is valid, return submissions
+      const submissions = readSubmissions();
+      return NextResponse.json({ 
+        success: true, 
+        submissions,
+        count: submissions.length 
+      });
+    } catch (parseError) {
+      // If parsing fails, session format is invalid
       return NextResponse.json(
-        { success: false, message: 'Invalid or expired session' },
+        { success: false, message: 'Invalid session format' },
         { status: 401 }
       );
     }
-
-    const submissions = readSubmissions();
-    return NextResponse.json({ 
-      success: true, 
-      submissions,
-      count: submissions.length 
-    });
   } catch (error) {
     console.error('Error reading submissions:', error);
     return NextResponse.json(

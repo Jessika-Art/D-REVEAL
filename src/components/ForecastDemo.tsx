@@ -224,6 +224,38 @@ const ForecastDemo = () => {
     }
   };
 
+  // Format date to dd/mm/yyyy format
+  const formatDate = (dateString: string): string => {
+    try {
+      const date = new Date(dateString);
+      
+      // Check if the date is valid
+      if (isNaN(date.getTime())) {
+        return dateString; // Return original if invalid
+      }
+      
+      // Format to dd/mm/yyyy
+      const day = date.getDate().toString().padStart(2, '0');
+      const month = (date.getMonth() + 1).toString().padStart(2, '0');
+      const year = date.getFullYear();
+      
+      return `${day}/${month}/${year}`;
+    } catch (error) {
+      return dateString; // Return original if error
+    }
+  };
+
+  // Sort economic calendar by date (nearest upcoming events first)
+  const sortedEconomicCalendar = [...agent.economic_calendar].sort((a, b) => {
+    try {
+      const dateA = new Date(a.time);
+      const dateB = new Date(b.time);
+      return dateA.getTime() - dateB.getTime(); // Ascending order (nearest dates first)
+    } catch (error) {
+      return 0; // Keep original order if dates can't be parsed
+    }
+  });
+
   const DirectionIcon = getDirectionIcon(agent.forecast_recaps.forecast_direction);
 
   // Calculate duration based on timeframe * 60
@@ -343,8 +375,8 @@ const ForecastDemo = () => {
               </div>
               <div className="text-right">
                 <div className="text-sm text-gray-300">Generated</div>
-                <div className="text-lg font-semibold">{agent.date}</div>
-                <div className="text-sm text-gray-500">yyyy/mm/dd</div>
+                <div className="text-lg font-semibold">{agent.date ? formatDate(agent.date) : formatDate(new Date().toISOString())}</div>
+                <div className="text-sm text-gray-500">dd/mm/yyyy</div>
               </div>
             </div>
           </div>
@@ -606,7 +638,7 @@ const ForecastDemo = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {agent.economic_calendar.map((event, index) => (
+                  {sortedEconomicCalendar.map((event, index) => (
                     <motion.tr
                       key={index}
                       initial={{ opacity: 0, x: -20 }}
@@ -615,7 +647,7 @@ const ForecastDemo = () => {
                       className="border-t border-white/10 hover:bg-white/5 transition-colors"
                     >
                       <td className="px-6 py-4 text-sm text-gray-300">
-                        {new Date(event.time).toLocaleDateString()}
+                        {formatDate(event.time)}
                       </td>
                       <td className="px-6 py-4 text-sm font-medium">{event.event}</td>
                       <td className="px-6 py-4">

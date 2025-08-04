@@ -18,6 +18,8 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useSessionTimeout } from '@/hooks/useSessionTimeout';
+import SessionTimeoutWarning from '@/components/SessionTimeoutWarning';
 
 interface GeneratedReport {
   id: string;
@@ -36,6 +38,10 @@ const ReportsAdminPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   
+  // Session timeout state
+  const [showTimeoutWarning, setShowTimeoutWarning] = useState(false);
+  const [timeRemaining, setTimeRemaining] = useState(0);
+  
   // Form state
   const [clientName, setClientName] = useState('');
   const [generatedDate, setGeneratedDate] = useState('');
@@ -44,6 +50,43 @@ const ReportsAdminPage = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   
   const router = useRouter();
+
+  // Session timeout handlers
+  const handleSessionWarning = (remaining: number) => {
+    setTimeRemaining(remaining);
+    setShowTimeoutWarning(true);
+  };
+
+  const handleSessionTimeout = () => {
+    setShowTimeoutWarning(false);
+    setIsAuthenticated(false);
+    router.push('/admin/login');
+  };
+
+  const handleExtendSession = async () => {
+    try {
+      const response = await fetch('/api/auth', {
+        credentials: 'include'
+      });
+      const data = await response.json();
+      
+      if (data.authenticated) {
+        setShowTimeoutWarning(false);
+        setSuccess('Session extended successfully');
+      } else {
+        handleSessionTimeout();
+      }
+    } catch (error) {
+      console.error('Failed to extend session:', error);
+      handleSessionTimeout();
+    }
+  };
+
+  // Initialize session timeout monitoring
+  const { refreshSession } = useSessionTimeout({
+    onWarning: handleSessionWarning,
+    onTimeout: handleSessionTimeout
+  });
 
   const checkAuthentication = async () => {
     try {
@@ -206,6 +249,15 @@ const ReportsAdminPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-purple-900 py-8 px-4">
+      {/* Session Timeout Warning */}
+      {showTimeoutWarning && (
+        <SessionTimeoutWarning
+          timeRemaining={timeRemaining}
+          onExtendSession={handleExtendSession}
+          onLogout={handleLogout}
+        />
+      )}
+      
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <motion.div

@@ -142,7 +142,7 @@ const OpportunitiesSection = () => {
               viewport={{ once: true }}
               className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent mb-4"
             >
-              100%
+              97%
             </motion.div>
             <h4 className="text-xl font-semibold mb-2">Zone Accuracy</h4>
             <p className="text-white/70">Precision targeting with confidence</p>

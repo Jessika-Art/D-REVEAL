@@ -30,7 +30,7 @@ const CompaniesSection = () => {
   const comparisons = [
     {
       category: "High Frequency Trading HFT",
-      ourApproach: "One forecast last days",
+      ourApproach: "One forecast lasts days",
       others: "Ultra-expensive infrastructure, geo-distributed servers",
       advantage: "Anticipate the short and long-term market movements"
     },

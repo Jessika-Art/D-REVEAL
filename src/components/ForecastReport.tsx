@@ -62,6 +62,34 @@ const ForecastReport = ({ clientName, generatedDate, chartUrl, reportData }: For
   const [showQRCode, setShowQRCode] = useState(false);
   const [qrCodeDataURL, setQrCodeDataURL] = useState('');
 
+  // Format date to dd/mm/yyyy format
+  const formatGeneratedDate = (dateString: string): string => {
+    try {
+      // Try to parse the date string
+      const date = new Date(dateString);
+      
+      // Check if the date is valid
+      if (isNaN(date.getTime())) {
+        // If the date string is already in dd/mm/yyyy format, return as is
+        if (/^\d{2}\/\d{2}\/\d{4}$/.test(dateString)) {
+          return dateString;
+        }
+        // Otherwise return the original string
+        return dateString;
+      }
+      
+      // Format to dd/mm/yyyy
+      const day = date.getDate().toString().padStart(2, '0');
+      const month = (date.getMonth() + 1).toString().padStart(2, '0');
+      const year = date.getFullYear();
+      
+      return `${day}/${month}/${year}`;
+    } catch (error) {
+      // If any error occurs, return the original string
+      return dateString;
+    }
+  };
+
   // QR Code function with logo overlay
   const generateQRCode = async () => {
     try {
@@ -402,8 +430,8 @@ const ForecastReport = ({ clientName, generatedDate, chartUrl, reportData }: For
               </div>
               <div className="text-right">
                 <div className="text-sm text-gray-300">Generated</div>
-                <div className="text-lg font-semibold">{generatedDate}</div>
-                <div className="text-sm text-gray-500">dd/mm/yyyy</div>
+                <div className="text-lg font-semibold">{formatGeneratedDate(generatedDate)}</div>
+                <div className="text-sm text-gray-600">dd/mm/yyyy</div>
               </div>
             </div>
           </div>

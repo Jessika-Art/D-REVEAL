@@ -14,8 +14,15 @@ export async function POST(request: NextRequest) {
     const { username, password } = await request.json();
 
     if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
-      // Create a simple session token
-      const sessionToken = Buffer.from(`${username}:${Date.now()}`).toString('base64');
+      // Create session data with expiration time (15 minutes)
+      const sessionData = {
+        username,
+        loginTime: Date.now(),
+        lastActivity: Date.now(),
+        expiresAt: Date.now() + (15 * 60 * 1000) // 15 minutes from now
+      };
+      
+      const sessionToken = Buffer.from(JSON.stringify(sessionData)).toString('base64');
       
       // Set cookie
       const response = NextResponse.json({ success: true, message: 'Authentication successful' });
@@ -23,7 +30,7 @@ export async function POST(request: NextRequest) {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'strict',
-        maxAge: 60 * 60 * 24, // 24 hours
+        maxAge: 15 * 60, // 15 minutes
       });
 
       return response;
@@ -48,14 +55,40 @@ export async function GET() {
     const sessionToken = cookieStore.get('admin-session');
 
     if (sessionToken) {
-      // Simple validation - check if token exists and is not too old
-      const tokenData = Buffer.from(sessionToken.value, 'base64').toString();
-      const [username, timestamp] = tokenData.split(':');
-      const tokenAge = Date.now() - parseInt(timestamp);
-      const maxAge = 60 * 60 * 24 * 1000; // 24 hours in milliseconds
+      try {
+        // Parse session data
+        const sessionData = JSON.parse(Buffer.from(sessionToken.value, 'base64').toString());
+        const now = Date.now();
 
-      if (username === ADMIN_USERNAME && tokenAge < maxAge) {
-        return NextResponse.json({ authenticated: true });
+        // Check if session is valid and not expired
+        if (sessionData.username === ADMIN_USERNAME && now < sessionData.expiresAt) {
+          // Session is valid, refresh it with new expiration time
+          const refreshedSessionData = {
+            ...sessionData,
+            lastActivity: now,
+            expiresAt: now + (15 * 60 * 1000) // Extend by 15 minutes
+          };
+
+          const refreshedToken = Buffer.from(JSON.stringify(refreshedSessionData)).toString('base64');
+          
+          const response = NextResponse.json({ 
+            authenticated: true,
+            expiresAt: refreshedSessionData.expiresAt,
+            timeRemaining: refreshedSessionData.expiresAt - now
+          });
+          
+          // Update cookie with refreshed session
+          response.cookies.set('admin-session', refreshedToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+            maxAge: 15 * 60, // 15 minutes
+          });
+
+          return response;
+        }
+      } catch (parseError) {
+        console.error('Session parse error:', parseError);
       }
     }
 

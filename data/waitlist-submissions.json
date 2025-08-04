@@ -24,5 +24,32 @@
     "contactMethod": "",
     "timeline": "",
     "additionalNotes": "Some additional notes"
+  },
+  {
+    "id": "1754302860361",
+    "timestamp": "2025-08-04T10:21:00.361Z",
+    "fullName": "Jessika Nicastro",
+    "email": "jessikanicastro01@gmail.com",
+    "company": "Doula Billion Fund",
+    "jobTitle": "President",
+    "companyType": "Wealth Management",
+    "aum": "$5B - $10B",
+    "primaryMarkets": [
+      "Equities",
+      "Derivatives",
+      "Cryptocurrency",
+      "Forex/FX",
+      "Alternative Investments",
+      "Commodities"
+    ],
+    "currentTools": "",
+    "teamSize": "Individual",
+    "location": "",
+    "biggestChallenge": "",
+    "interestLevel": "Future consideration",
+    "budgetRange": "$100K - $500K annually",
+    "contactMethod": "",
+    "timeline": "",
+    "additionalNotes": ""
   }
 ]
