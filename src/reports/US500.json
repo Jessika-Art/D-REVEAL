@@ -12,7 +12,7 @@
       "12H": {
         "trend": "bullish",
         "support_resistance": {
-          "support": [6400, 6280],
+          "support": [6150, 6180],
           "resistance": [6550, 6620]
         },
         "supply_demand_zones": {
@@ -32,7 +32,7 @@
       "6H": {
         "trend": "mild bullish consolidation",
         "support_resistance": {
-          "support": [6400],
+          "support": [6150],
           "resistance": [6550]
         },
         "supply_demand_zones": {
