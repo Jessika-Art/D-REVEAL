@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Building2, Users, TrendingUp, Mail, User, MapPin, DollarSign, Target, CheckCircle, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import { trackEvent, trackFormSubmission } from '@/components/GoogleAnalytics';
 
 const WaitlistPage = () => {
   const [formData, setFormData] = useState({
@@ -132,6 +133,15 @@ const WaitlistPage = () => {
       const result = await response.json();
 
       if (result.success) {
+        // Track successful form submission
+        trackFormSubmission('waitlist_form', {
+          company_type: formData.companyType,
+          aum_range: formData.aum,
+          team_size: formData.teamSize,
+          interest_level: formData.interestLevel,
+          primary_markets: formData.primaryMarkets.join(',')
+        });
+        
         setIsSubmitted(true);
       } else {
         console.error('Submission failed:', result.message);
@@ -170,6 +180,7 @@ const WaitlistPage = () => {
           
           <Link
             href="/"
+            onClick={() => trackEvent('button_click', { button_name: 'back_to_home_success' })}
             className="inline-flex items-center gap-2 bg-white text-black px-6 py-3 rounded-full font-semibold hover:bg-gray-100 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
@@ -192,6 +203,7 @@ const WaitlistPage = () => {
         >
           <Link
             href="/"
+            onClick={() => trackEvent('button_click', { button_name: 'back_to_home_form' })}
             className="inline-flex items-center gap-2 text-white/60 hover:text-white transition-colors mb-8"
           >
             <ArrowLeft className="w-4 h-4" />

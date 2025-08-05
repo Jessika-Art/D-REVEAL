@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { ArrowRight, ChevronDown } from 'lucide-react';
+import { trackEvent } from './GoogleAnalytics';
 
 const HeroSection = () => {
   return (
@@ -46,6 +47,7 @@ const HeroSection = () => {
             >
               <motion.a
                 href="/demo"
+                onClick={() => trackEvent('button_click', { button_name: 'launch_demo_hero' })}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="border-2 border-white text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-white hover:text-purple-600 transition-colors duration-[0.9s] inline-flex items-center gap-2"

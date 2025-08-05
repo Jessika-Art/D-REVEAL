@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -31,6 +32,7 @@ export default function RootLayout({
         <link rel="shortcut icon" href="/favicon.ico?v=3" />
       </head>
       <body className="font-sans antialiased">
+        <GoogleAnalytics />
         {children}
       </body>
     </html>

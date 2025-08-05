@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { TrendingUp, TrendingDown, Calendar, Target, BarChart3, AlertTriangle, CheckCircle, Clock, DollarSign, Activity, Maximize2, X, Move, ZoomIn, ZoomOut, Hand, HelpCircle, Home, ArrowRight, Link, Check, QrCode } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import QRCode from 'qrcode';
+import { trackEvent, trackButtonClick } from './GoogleAnalytics';
 
 interface ForecastData {
   agent: {
@@ -289,12 +290,13 @@ const ForecastDemo = () => {
             <div className="flex flex-col xs:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
               <motion.a
                 href="/"
+                onClick={() => trackEvent('button_click', { button_name: 'return_to_home_demo' })}
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="flex items-center justify-center gap-2 px-4 sm:px-6 py-3 bg-white/10 hover:bg-white/20 border border-white/20 rounded-full font-medium transition-all backdrop-blur-sm text-sm sm:text-base w-full xs:w-auto"
+                className="flex items-center justify-center gap-2 px-4 sm:px-6 py-3 bg-white/10 hover:bg-white/20 border border-white/20 rounded-full font-medium transition-all text-sm sm:text-base w-full xs:w-auto"
               >
                 <Home className="w-4 h-4" />
                 <span className="hidden xs:inline">Return to Home</span>
@@ -302,6 +304,7 @@ const ForecastDemo = () => {
               </motion.a>
               <motion.a
                 href="/waitlist"
+                onClick={() => trackEvent('button_click', { button_name: 'request_access_demo' })}
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.6, delay: 0.3 }}
@@ -318,7 +321,10 @@ const ForecastDemo = () => {
             {/* Share Features - Responsive positioning */}
             <div className="flex gap-2 sm:gap-3 w-full sm:w-auto sm:ml-4">
               <motion.button
-                onClick={generateQRCode}
+                onClick={() => {
+                  trackEvent('button_click', { button_name: 'generate_qr_code' });
+                  generateQRCode();
+                }}
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.4 }}
@@ -333,7 +339,10 @@ const ForecastDemo = () => {
               </motion.button>
 
               <motion.button
-                onClick={copyURL}
+                onClick={() => {
+                  trackEvent('button_click', { button_name: 'copy_url' });
+                  copyURL();
+                }}
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.45 }}

@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { ArrowRight, Eye, TrendingUp, Shield, Zap, Clock, Target } from 'lucide-react';
+import { trackEvent } from './GoogleAnalytics';
 
 const OpportunitiesSection = () => {
   const valueProps = [
@@ -180,6 +181,7 @@ const OpportunitiesSection = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <motion.a
                 href="/waitlist"
+                onClick={() => trackEvent('button_click', { button_name: 'request_access_opportunities' })}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="bg-white text-purple-600 px-8 py-4 rounded-full font-semibold text-lg hover:bg-gray-100 transition-colors inline-flex items-center gap-2"
@@ -189,6 +191,7 @@ const OpportunitiesSection = () => {
               </motion.a>
               <motion.a
                  href="/demo"
+                 onClick={() => trackEvent('button_click', { button_name: 'view_sample_forecasts' })}
                  whileHover={{ scale: 1.05 }}
                  whileTap={{ scale: 0.95 }}
                  className="border-2 border-white text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-white hover:text-purple-600 transition-colors inline-flex items-center gap-2"
