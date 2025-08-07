@@ -210,7 +210,7 @@ export async function deleteReport(id: string) {
     if (error) throw error
   } else {
     const reports = await getReports()
-    const filteredReports = reports.filter(report => report.id !== id)
+    const filteredReports = reports.filter((report: any) => report.id !== id)
     fs.writeFileSync(REPORTS_INDEX_FILE, JSON.stringify(filteredReports, null, 2))
   }
 }
