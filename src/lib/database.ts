@@ -196,7 +196,7 @@ export async function getReportByToken(token: string) {
     }
   } else {
     const reports = await getReports()
-    return reports.find(report => report.token === token) || null
+    return reports.find((report: any) => report.token === token) || null
   }
 }
 
