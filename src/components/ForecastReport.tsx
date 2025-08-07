@@ -52,41 +52,6 @@ interface ReportData {
     strategic_notes?: string;
     summary?: string[];
   };
-  forecast: {
-    asset: string;
-    direction: string;
-    timeframe: string;
-    duration: string;
-    confidence: number;
-  };
-  technical_analysis: {
-    [key: string]: {
-      trend: string;
-      support: number;
-      resistance: number;
-      indicators: {
-        rsi: number;
-        macd: string;
-        bollinger: string;
-      };
-    };
-  };
-  macro_fundamentals: {
-    economic_outlook: string;
-    market_sentiment: string;
-    risk_factors: string[];
-  };
-  economic_calendar: Array<{
-    date: string;
-    event: string;
-    impact: string;
-    forecast: string;
-  }>;
-  strategic_notes: {
-    entry_strategy: string;
-    risk_management: string;
-    exit_strategy: string;
-  };
 }
 
 interface ForecastReportProps {
