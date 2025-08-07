@@ -31,12 +31,9 @@ interface ForecastData {
           ChOCh: string;
         };
         indicators: {
-          RSI: string;
-          MACD: string;
-          MA: {
-            [key: string]: string;
-          };
-          Bollinger_Bands: string;
+          cumulative_delta: string;
+          sentiment: string;
+          market_regime: string;
         };
       };
     };
