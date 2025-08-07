@@ -225,8 +225,8 @@ const ForecastReport = ({ clientName, generatedDate, chartUrl, reportData }: For
   };
 
   // Handle different data structures safely
-  const forecast = reportData.forecast || reportData.agent?.forecast_recaps;
-  const direction = reportData.forecast?.direction || reportData.agent?.forecast_recaps?.forecast_direction || 'Unknown';
+  const forecast = reportData.agent?.forecast_recaps;
+  const direction = reportData.agent?.forecast_recaps?.forecast_direction || 'Unknown';
   const asset = forecast?.asset || 'Unknown Asset';
   const timeframe = forecast?.timeframe || 'Unknown';
   
@@ -272,7 +272,7 @@ const ForecastReport = ({ clientName, generatedDate, chartUrl, reportData }: For
   };
   
   const duration = calculateDuration();
-  const confidence = reportData.forecast?.confidence || reportData.agent?.forecast_recaps?.confidence_level || 'Unknown';
+  const confidence = reportData.agent?.forecast_recaps?.confidence_level || 'Unknown';
   
   // Convert confidence level text to number if needed for progress bar
   const confidenceNumber = typeof confidence === 'string' ? 
@@ -280,11 +280,11 @@ const ForecastReport = ({ clientName, generatedDate, chartUrl, reportData }: For
     confidence;
   
   // Handle technical analysis data structure
-  const technicalAnalysis = reportData.technical_analysis || reportData.agent?.technical_analysis || {};
+  const technicalAnalysis = reportData.agent?.technical_analysis || {};
   
   // Handle economic calendar data structure
   // Sort economic calendar by date (nearest dates first) and ensure it's an array
-  const economicCalendar = (reportData.economic_calendar || reportData.agent?.economic_calendar || [])
+  const economicCalendar = (reportData.agent?.economic_calendar || [])
     .sort((a: any, b: any) => {
       try {
         const dateA = new Date(a.time);
@@ -296,14 +296,14 @@ const ForecastReport = ({ clientName, generatedDate, chartUrl, reportData }: For
     });
   
   // Handle macro fundamentals data structure
-  const macroFundamentals = reportData.macro_fundamentals || {
+  const macroFundamentals = {
     economic_outlook: reportData.agent?.macro_fundamentals || 'N/A',
     market_sentiment: 'N/A',
     risk_factors: []
   };
   
   // Handle strategic notes data structure
-  const strategicNotes = reportData.strategic_notes || {
+  const strategicNotes = {
     entry_strategy: reportData.agent?.strategic_notes || 'N/A',
     risk_management: 'N/A',
     exit_strategy: 'N/A'
