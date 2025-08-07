@@ -8,6 +8,7 @@ import { trackEvent, trackButtonClick } from './GoogleAnalytics';
 
 interface ForecastData {
   agent: {
+    date: string;
     name: string;
     forecast_recaps: {
       asset: string;
