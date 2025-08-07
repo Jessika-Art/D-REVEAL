@@ -111,6 +111,11 @@ const ForecastReport = ({ clientName, generatedDate, chartUrl, reportData }: For
       const ctx = canvas.getContext('2d');
       const qrImage = new Image();
 
+      if (!ctx) {
+        console.error('Unable to get 2D context from canvas');
+        return;
+      }
+
       qrImage.onload = () => {
         canvas.width = qrImage.width;
         canvas.height = qrImage.height;
