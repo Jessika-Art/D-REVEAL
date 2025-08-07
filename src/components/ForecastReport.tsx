@@ -296,18 +296,10 @@ const ForecastReport = ({ clientName, generatedDate, chartUrl, reportData }: For
     });
   
   // Handle macro fundamentals data structure
-  const macroFundamentals = {
-    economic_outlook: reportData.agent?.macro_fundamentals || 'N/A',
-    market_sentiment: 'N/A',
-    risk_factors: []
-  };
+  const macroFundamentals = reportData.agent?.macro_fundamentals || 'No macro fundamentals data available';
   
   // Handle strategic notes data structure
-  const strategicNotes = {
-    entry_strategy: reportData.agent?.strategic_notes || 'N/A',
-    risk_management: 'N/A',
-    exit_strategy: 'N/A'
-  };
+  const strategicNotes = reportData.agent?.strategic_notes || 'No strategic notes data available';
   
   const DirectionIcon = getDirectionIcon(direction);
 
