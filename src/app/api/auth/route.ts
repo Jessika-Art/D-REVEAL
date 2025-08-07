@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import sessionManager from '@/lib/sessionManager';
 
+// Force dynamic rendering since we use cookies
+export const dynamic = 'force-dynamic';
+
 // Get credentials from environment variables
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'dreveal2024';

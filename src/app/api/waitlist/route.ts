@@ -3,6 +3,9 @@ import { cookies } from 'next/headers';
 import fs from 'fs';
 import path from 'path';
 
+// Force dynamic rendering since we use cookies
+export const dynamic = 'force-dynamic';
+
 const DATA_FILE = path.join(process.cwd(), 'data', 'waitlist-submissions.json');
 
 // Ensure data directory exists

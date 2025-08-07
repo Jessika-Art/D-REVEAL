@@ -104,8 +104,8 @@ export default function ReportPage({ params }: { params: { token: string } }) {
     notFound();
   }
 
-  // Construct the chart URL
-  const chartUrl = `/reports/charts/${report.chartFileName}`;
+  // Construct the chart URL using the API route
+  const chartUrl = `/api/charts/${report.chartFileName}`;
 
   return (
     <ForecastReport

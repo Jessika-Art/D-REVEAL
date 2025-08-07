@@ -5,6 +5,9 @@ import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import crypto from 'crypto';
 
+// Force dynamic rendering since we use cookies
+export const dynamic = 'force-dynamic';
+
 // Get admin username from environment variables
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
 

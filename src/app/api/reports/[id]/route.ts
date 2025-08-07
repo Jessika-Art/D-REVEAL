@@ -3,6 +3,9 @@ import { cookies } from 'next/headers';
 import fs from 'fs';
 import path from 'path';
 
+// Force dynamic rendering since we use cookies
+export const dynamic = 'force-dynamic';
+
 // Get admin username from environment variables
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
 
