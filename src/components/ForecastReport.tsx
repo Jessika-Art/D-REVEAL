@@ -680,7 +680,7 @@ const ForecastReport = ({ clientName, generatedDate, chartUrl, reportData }: For
                   {economicCalendar.map((event, index) => (
                     <tr key={index} className="hover:bg-white/5 transition-colors">
                       <td className="px-6 py-4 text-sm text-white">
-                        {event.time ? formatDate(event.time) : (event.date ? formatDate(event.date) : 'N/A')}
+                        {event.time ? formatDate(event.time) : 'N/A'}
                       </td>
                       <td className="px-6 py-4 text-sm text-white">{event.event || 'N/A'}</td>
                       <td className="px-6 py-4">
