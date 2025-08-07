@@ -307,7 +307,7 @@ const ForecastReport = ({ clientName, generatedDate, chartUrl, reportData }: For
   };
   
   const duration = calculateDuration();
-  const confidence = forecast?.confidence || forecast?.confidence_level || 'Unknown';
+  const confidence = reportData.forecast?.confidence || reportData.agent?.forecast_recaps?.confidence_level || 'Unknown';
   
   // Convert confidence level text to number if needed for progress bar
   const confidenceNumber = typeof confidence === 'string' ? 
