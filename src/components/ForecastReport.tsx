@@ -583,8 +583,8 @@ const ForecastReport = ({ clientName, generatedDate, chartUrl, reportData }: For
             {Object.entries(technicalAnalysis).map(([timeframe, analysis], index) => {
               // Handle different data structures
               const trend = analysis.trend || 'N/A';
-              const support = analysis.support || analysis.support_resistance?.support || 'N/A';
-              const resistance = analysis.resistance || analysis.support_resistance?.resistance || 'N/A';
+              const support = analysis.support_resistance?.support || 'N/A';
+              const resistance = analysis.support_resistance?.resistance || 'N/A';
               const indicators = analysis.indicators || {};
               
               // Format support/resistance if they are arrays
