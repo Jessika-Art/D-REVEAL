@@ -23,8 +23,8 @@ interface ForecastData {
           resistance: number[];
         };
         supply_demand_zones: {
-          demand: string[];
-          supply: string[];
+          demand: number[];
+          supply: number[];
         };
         structure: {
           BOS: string;
