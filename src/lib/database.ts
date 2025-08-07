@@ -171,6 +171,9 @@ export async function getReports() {
   }
 }
 
+// Alias for API compatibility
+export const getAllReports = getReports;
+
 export async function getReportByToken(token: string) {
   if (USE_DATABASE) {
     const { data, error } = await supabase

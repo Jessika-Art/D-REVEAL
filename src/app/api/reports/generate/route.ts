@@ -4,6 +4,7 @@ import fs from 'fs';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import crypto from 'crypto';
+import { saveReport, uploadFile } from '@/lib/database';
 
 // Force dynamic rendering since we use cookies
 export const dynamic = 'force-dynamic';
@@ -11,48 +12,21 @@ export const dynamic = 'force-dynamic';
 // Get admin username from environment variables
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
 
+// Environment check - use database in production, files in development
+const USE_DATABASE = process.env.NODE_ENV === 'production' || process.env.USE_DATABASE === 'true';
+
 const REPORTS_DIR = path.join(process.cwd(), 'data', 'reports');
 const REPORTS_INDEX_FILE = path.join(REPORTS_DIR, 'index.json');
 const CHARTS_DIR = path.join(process.cwd(), 'public', 'reports', 'charts');
 const DATA_DIR = path.join(process.cwd(), 'public', 'reports', 'data');
 
-// Ensure directories exist
-[REPORTS_DIR, CHARTS_DIR, DATA_DIR].forEach(dir => {
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
-  }
-});
-
-interface Report {
-  id: string;
-  token: string;
-  clientName: string;
-  generatedDate: string;
-  createdAt: string;
-  chartFileName: string;
-  jsonFileName: string;
-}
-
-function loadReports(): Report[] {
-  try {
-    if (!fs.existsSync(REPORTS_INDEX_FILE)) {
-      return [];
+// Ensure directories exist (for file-based storage)
+if (!USE_DATABASE) {
+  [REPORTS_DIR, CHARTS_DIR, DATA_DIR].forEach(dir => {
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
     }
-    const data = fs.readFileSync(REPORTS_INDEX_FILE, 'utf8');
-    return JSON.parse(data);
-  } catch (error) {
-    console.error('Error loading reports:', error);
-    return [];
-  }
-}
-
-function saveReports(reports: Report[]): void {
-  try {
-    fs.writeFileSync(REPORTS_INDEX_FILE, JSON.stringify(reports, null, 2));
-  } catch (error) {
-    console.error('Error saving reports:', error);
-    throw new Error('Failed to save reports');
-  }
+  });
 }
 
 function generateToken(): string {
@@ -140,24 +114,52 @@ export async function POST(request: NextRequest) {
     const chartBuffer = Buffer.from(await chartFile.arrayBuffer());
     const jsonBuffer = Buffer.from(await jsonFile.arrayBuffer());
 
-    fs.writeFileSync(path.join(CHARTS_DIR, chartFileName), chartBuffer);
-    fs.writeFileSync(path.join(DATA_DIR, jsonFileName), jsonBuffer);
+    let chartUrl = '';
+    let dataUrl = '';
+
+    if (USE_DATABASE) {
+      // Upload to Supabase Storage
+      try {
+        chartUrl = await uploadFile(chartBuffer, chartFileName, 'report-charts');
+        dataUrl = await uploadFile(jsonBuffer, jsonFileName, 'report-data');
+      } catch (error) {
+        console.error('Error uploading to Supabase Storage:', error);
+        return NextResponse.json(
+          { success: false, error: 'Failed to upload files to storage' },
+          { status: 500 }
+        );
+      }
+    } else {
+      // Save to local filesystem
+      fs.writeFileSync(path.join(CHARTS_DIR, chartFileName), chartBuffer);
+      fs.writeFileSync(path.join(DATA_DIR, jsonFileName), jsonBuffer);
+      chartUrl = `/reports/charts/${chartFileName}`;
+      dataUrl = `/reports/data/${jsonFileName}`;
+    }
 
     // Create report record
-    const newReport: Report = {
+    const newReport = {
       id: reportId,
       token,
       clientName,
       generatedDate,
       createdAt: new Date().toISOString(),
       chartFileName,
-      jsonFileName
+      jsonFileName,
+      chartUrl,
+      dataUrl
     };
 
-    // Save to reports index
-    const reports = loadReports();
-    reports.push(newReport);
-    saveReports(reports);
+    // Save report using database function
+    try {
+      await saveReport(newReport);
+    } catch (error) {
+      console.error('Error saving report:', error);
+      return NextResponse.json(
+        { success: false, error: 'Failed to save report to database' },
+        { status: 500 }
+      );
+    }
 
     return NextResponse.json({
       success: true,

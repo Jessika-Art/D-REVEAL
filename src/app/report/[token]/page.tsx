@@ -1,111 +1,48 @@
 import { notFound } from 'next/navigation';
-import fs from 'fs';
-import path from 'path';
 import ForecastReport from '@/components/ForecastReport';
+import { getReportByToken } from '@/lib/database';
 
-const REPORTS_DIR = path.join(process.cwd(), 'data', 'reports');
-const REPORTS_INDEX_FILE = path.join(REPORTS_DIR, 'index.json');
-
-interface Report {
-  id: string;
-  token: string;
-  clientName: string;
-  generatedDate: string;
-  createdAt: string;
-  chartFileName: string;
-  jsonFileName: string;
-}
-
-interface ReportData {
-  agent: {
-    name: string;
-    version: string;
-    model: string;
-  };
-  forecast: {
-    asset: string;
-    direction: string;
-    timeframe: string;
-    duration: string;
-    confidence: number;
-  };
-  technical_analysis: {
-    [key: string]: {
-      trend: string;
-      support: number;
-      resistance: number;
-      indicators: {
-        rsi: number;
-        macd: string;
-        bollinger: string;
-      };
-    };
-  };
-  macro_fundamentals: {
-    economic_outlook: string;
-    market_sentiment: string;
-    risk_factors: string[];
-  };
-  economic_calendar: Array<{
-    date: string;
-    event: string;
-    impact: string;
-    forecast: string;
-  }>;
-  strategic_notes: {
-    entry_strategy: string;
-    risk_management: string;
-    exit_strategy: string;
-  };
-}
-
-function loadReports(): Report[] {
+async function fetchReportData(dataUrl: string) {
   try {
-    if (!fs.existsSync(REPORTS_INDEX_FILE)) {
-      return [];
+    // If it's a Supabase URL, fetch directly
+    if (dataUrl.startsWith('http')) {
+      const response = await fetch(dataUrl);
+      if (!response.ok) return null;
+      return await response.json();
+    } else {
+      // Local file path - read from filesystem
+      const fs = await import('fs');
+      const path = await import('path');
+      const filePath = path.join(process.cwd(), 'public', dataUrl);
+      if (!fs.existsSync(filePath)) return null;
+      const data = fs.readFileSync(filePath, 'utf8');
+      return JSON.parse(data);
     }
-    const data = fs.readFileSync(REPORTS_INDEX_FILE, 'utf8');
-    return JSON.parse(data);
-  } catch (error) {
-    console.error('Error loading reports:', error);
-    return [];
-  }
-}
-
-function loadReportData(jsonFileName: string): ReportData | null {
-  try {
-    const dataPath = path.join(process.cwd(), 'public', 'reports', 'data', jsonFileName);
-    if (!fs.existsSync(dataPath)) {
-      return null;
-    }
-    const data = fs.readFileSync(dataPath, 'utf8');
-    return JSON.parse(data);
   } catch (error) {
     console.error('Error loading report data:', error);
     return null;
   }
 }
 
-export default function ReportPage({ params }: { params: { token: string } }) {
+export default async function ReportPage({ params }: { params: { token: string } }) {
   const { token } = params;
   
   // Find the report by token
-  const reports = loadReports();
-  const report = reports.find(r => r.token === token);
+  const report = await getReportByToken(token);
   
   if (!report) {
     notFound();
   }
 
   // Load the report data
-  const reportData = loadReportData(report.jsonFileName);
+  const reportData = await fetchReportData(report.dataUrl || `/reports/data/${report.jsonFileName}`);
   
   if (!reportData) {
     notFound();
   }
 
-  // Construct the chart URL using the API route
-  const chartUrl = `/api/charts/${report.chartFileName}`;
+  // Use chart URL from database or construct local path
+  const chartUrl = report.chartUrl || `/reports/charts/${report.chartFileName}`;
 
   return (
     <ForecastReport
@@ -115,17 +52,4 @@ export default function ReportPage({ params }: { params: { token: string } }) {
       reportData={reportData}
     />
   );
-}
-
-// Generate static params for better performance (optional)
-export async function generateStaticParams() {
-  try {
-    const reports = loadReports();
-    return reports.map((report) => ({
-      token: report.token,
-    }));
-  } catch (error) {
-    console.error('Error generating static params:', error);
-    return [];
-  }
 }
