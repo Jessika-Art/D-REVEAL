@@ -29,7 +29,9 @@ const WaitlistPage = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<{[key: string]: boolean}>({});
+  const [errorMessages, setErrorMessages] = useState<{[key: string]: string}>({});
   const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false);
+  const [submitError, setSubmitError] = useState<string>('');
 
   const companyTypes = [
     'Hedge Fund',
@@ -92,27 +94,131 @@ const WaitlistPage = () => {
     }));
   };
 
-  const validateForm = () => {
+  const parseServerError = (errorMessage: string) => {
     const newErrors: {[key: string]: boolean} = {};
+    const newErrorMessages: {[key: string]: string} = {};
     
-    // Required fields
-    if (!formData.fullName.trim()) newErrors.fullName = true;
-    if (!formData.email.trim()) newErrors.email = true;
-    if (!formData.company.trim()) newErrors.company = true;
-    if (!formData.jobTitle.trim()) newErrors.jobTitle = true;
-    if (!formData.companyType) newErrors.companyType = true;
-    if (!formData.aum) newErrors.aum = true;
-    if (formData.primaryMarkets.length === 0) newErrors.primaryMarkets = true;
-    if (!formData.teamSize) newErrors.teamSize = true;
-    if (!formData.interestLevel) newErrors.interestLevel = true;
+    // Clear previous errors
+    setErrors({});
+    setErrorMessages({});
+    setSubmitError('');
+    
+    // Common database error patterns
+    if (errorMessage.includes('malformed array literal')) {
+      if (errorMessage.includes('primary_markets')) {
+        newErrors.primaryMarkets = true;
+        newErrorMessages.primaryMarkets = 'Invalid market selection format';
+      }
+      if (errorMessage.includes('current_tools')) {
+        newErrors.currentTools = true;
+        newErrorMessages.currentTools = 'Invalid tools format';
+      }
+    } else if (errorMessage.includes('violates not-null constraint')) {
+      // Parse which field is null
+      if (errorMessage.includes('full_name')) {
+        newErrors.fullName = true;
+        newErrorMessages.fullName = 'Full name is required';
+      }
+      if (errorMessage.includes('email')) {
+        newErrors.email = true;
+        newErrorMessages.email = 'Email is required';
+      }
+      if (errorMessage.includes('company')) {
+        newErrors.company = true;
+        newErrorMessages.company = 'Company name is required';
+      }
+      if (errorMessage.includes('job_title')) {
+        newErrors.jobTitle = true;
+        newErrorMessages.jobTitle = 'Job title is required';
+      }
+      if (errorMessage.includes('company_type')) {
+        newErrors.companyType = true;
+        newErrorMessages.companyType = 'Company type is required';
+      }
+      if (errorMessage.includes('aum')) {
+        newErrors.aum = true;
+        newErrorMessages.aum = 'AUM range is required';
+      }
+      if (errorMessage.includes('team_size')) {
+        newErrors.teamSize = true;
+        newErrorMessages.teamSize = 'Team size is required';
+      }
+      if (errorMessage.includes('interest_level')) {
+        newErrors.interestLevel = true;
+        newErrorMessages.interestLevel = 'Interest level is required';
+      }
+    } else if (errorMessage.includes('duplicate key value')) {
+      if (errorMessage.includes('email')) {
+        newErrors.email = true;
+        newErrorMessages.email = 'This email is already registered';
+      }
+    } else if (errorMessage.includes('invalid input syntax')) {
+      // Generic validation errors
+      setSubmitError('Please check your input and try again');
+    } else {
+      // Generic error
+      setSubmitError(errorMessage || 'An error occurred while submitting the form');
+    }
     
     setErrors(newErrors);
+    setErrorMessages(newErrorMessages);
+  };
+
+  const validateForm = () => {
+    const newErrors: {[key: string]: boolean} = {};
+    const newErrorMessages: {[key: string]: string} = {};
+    
+    // Required fields
+    if (!formData.fullName.trim()) {
+      newErrors.fullName = true;
+      newErrorMessages.fullName = 'Full name is required';
+    }
+    if (!formData.email.trim()) {
+      newErrors.email = true;
+      newErrorMessages.email = 'Email is required';
+    }
+    if (!formData.company.trim()) {
+      newErrors.company = true;
+      newErrorMessages.company = 'Company name is required';
+    }
+    if (!formData.jobTitle.trim()) {
+      newErrors.jobTitle = true;
+      newErrorMessages.jobTitle = 'Job title is required';
+    }
+    if (!formData.companyType) {
+      newErrors.companyType = true;
+      newErrorMessages.companyType = 'Company type is required';
+    }
+    if (!formData.aum) {
+      newErrors.aum = true;
+      newErrorMessages.aum = 'AUM range is required';
+    }
+    if (formData.primaryMarkets.length === 0) {
+      newErrors.primaryMarkets = true;
+      newErrorMessages.primaryMarkets = 'Please select at least one market';
+    }
+    if (!formData.teamSize) {
+      newErrors.teamSize = true;
+      newErrorMessages.teamSize = 'Team size is required';
+    }
+    if (!formData.interestLevel) {
+      newErrors.interestLevel = true;
+      newErrorMessages.interestLevel = 'Interest level is required';
+    }
+    
+    setErrors(newErrors);
+    setErrorMessages(newErrorMessages);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setHasAttemptedSubmit(true);
+    
+    // Clear previous server errors
+    setErrors({});
+    setErrorMessages({});
+    setSubmitError('');
     
     if (!validateForm()) {
       return;
@@ -144,11 +250,12 @@ const WaitlistPage = () => {
         setIsSubmitted(true);
       } else {
         console.error('Submission failed:', result.message);
-        // You could add error handling here
+        parseServerError(result.message || 'Submission failed');
       }
     } catch (error) {
       console.error('Error submitting form:', error);
-      // You could add error handling here
+      const errorMessage = error instanceof Error ? error.message : 'Network error occurred';
+      parseServerError(errorMessage);
     } finally {
       setIsSubmitting(false);
     }
@@ -224,6 +331,11 @@ const WaitlistPage = () => {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-8"
         >
+          {submitError && (
+            <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
+              <p className="text-red-400 text-sm">{submitError}</p>
+            </div>
+          )}
           <form onSubmit={handleSubmit} className="space-y-8">
             {/* Personal Information */}
             <div>
@@ -247,8 +359,8 @@ const WaitlistPage = () => {
                     }`}
                     placeholder="John Smith"
                   />
-                  {hasAttemptedSubmit && errors.fullName && (
-                    <p className="text-red-400 text-sm mt-1">This field is required</p>
+                  {(hasAttemptedSubmit && errors.fullName) && (
+                    <p className="text-red-400 text-sm mt-1">{errorMessages.fullName || 'This field is required'}</p>
                   )}
                 </div>
                 <div>
@@ -266,8 +378,8 @@ const WaitlistPage = () => {
                     }`}
                     placeholder="john@company.com"
                   />
-                  {hasAttemptedSubmit && errors.email && (
-                    <p className="text-red-400 text-sm mt-1">This field is required</p>
+                  {(hasAttemptedSubmit && errors.email) && (
+                    <p className="text-red-400 text-sm mt-1">{errorMessages.email || 'This field is required'}</p>
                   )}
                 </div>
               </div>
@@ -295,8 +407,8 @@ const WaitlistPage = () => {
                     }`}
                     placeholder="Acme Capital Management"
                   />
-                  {hasAttemptedSubmit && errors.company && (
-                    <p className="text-red-400 text-sm mt-1">This field is required</p>
+                  {(hasAttemptedSubmit && errors.company) && (
+                    <p className="text-red-400 text-sm mt-1">{errorMessages.company || 'This field is required'}</p>
                   )}
                 </div>
                 <div>
@@ -314,9 +426,9 @@ const WaitlistPage = () => {
                     }`}
                     placeholder="Portfolio Manager"
                   />
-                  {hasAttemptedSubmit && errors.jobTitle && (
-                    <p className="text-red-400 text-sm mt-1">This field is required</p>
-                  )}
+                  {(hasAttemptedSubmit && errors.jobTitle) && (
+                     <p className="text-red-400 text-sm mt-1">{errorMessages.jobTitle || 'This field is required'}</p>
+                   )}
                 </div>
                 <div>
                     <label className="block text-sm font-medium text-gray-300 mb-2">
@@ -338,9 +450,9 @@ const WaitlistPage = () => {
                       </option>
                     ))}
                   </select>
-                  {hasAttemptedSubmit && errors.companyType && (
-                    <p className="text-red-400 text-sm mt-1">This field is required</p>
-                  )}
+                  {(hasAttemptedSubmit && errors.companyType) && (
+                     <p className="text-red-400 text-sm mt-1">{errorMessages.companyType || 'This field is required'}</p>
+                   )}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-2">
@@ -361,8 +473,8 @@ const WaitlistPage = () => {
                       </option>
                     ))}
                   </select>
-                  {hasAttemptedSubmit && errors.aum && (
-                    <p className="text-red-400 text-sm mt-1">This field is required</p>
+                  {(hasAttemptedSubmit && errors.aum) && (
+                    <p className="text-red-400 text-sm mt-1">{errorMessages.aum || 'This field is required'}</p>
                   )}
                 </div>
               </div>
@@ -394,8 +506,8 @@ const WaitlistPage = () => {
                       </label>
                     ))}
                   </div>
-                  {hasAttemptedSubmit && errors.primaryMarkets && (
-                    <p className="text-red-400 text-sm mt-1">Please select at least one option</p>
+                  {(hasAttemptedSubmit && errors.primaryMarkets) && (
+                    <p className="text-red-400 text-sm mt-1">{errorMessages.primaryMarkets || 'Please select at least one option'}</p>
                   )}
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -408,9 +520,14 @@ const WaitlistPage = () => {
                       name="currentTools"
                       value={formData.currentTools}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 transition-colors"
+                      className={`w-full px-4 py-3 bg-white/5 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 transition-colors ${
+                        hasAttemptedSubmit && errors.currentTools ? 'border-red-500' : 'border-white/20'
+                      }`}
                       placeholder="Bloomberg, TradingView, etc."
                     />
+                    {(hasAttemptedSubmit && errors.currentTools) && (
+                      <p className="text-red-400 text-sm mt-1">{errorMessages.currentTools || 'Invalid format'}</p>
+                    )}
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-300 mb-2">
@@ -430,8 +547,8 @@ const WaitlistPage = () => {
                       <option value="Medium Team (11-50)" className="bg-gray-800">Medium Team (11-50)</option>
                       <option value="Large Team (50+)" className="bg-gray-800">Large Team (50+)</option>
                     </select>
-                    {hasAttemptedSubmit && errors.teamSize && (
-                      <p className="text-red-400 text-sm mt-1">This field is required</p>
+                    {(hasAttemptedSubmit && errors.teamSize) && (
+                      <p className="text-red-400 text-sm mt-1">{errorMessages.teamSize || 'This field is required'}</p>
                     )}
                   </div>
                 </div>
@@ -476,8 +593,8 @@ const WaitlistPage = () => {
                     <option value="Exploring options" className="bg-gray-800">Exploring options</option>
                     <option value="Future consideration" className="bg-gray-800">Future consideration</option>
                   </select>
-                  {hasAttemptedSubmit && errors.interestLevel && (
-                    <p className="text-red-400 text-sm mt-1">This field is required</p>
+                  {(hasAttemptedSubmit && errors.interestLevel) && (
+                    <p className="text-red-400 text-sm mt-1">{errorMessages.interestLevel || 'This field is required'}</p>
                   )}
                 </div>
                   <div>
