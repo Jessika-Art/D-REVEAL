@@ -52,7 +52,7 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     console.error('Error checking image:', error);
     return NextResponse.json(
-      { error: 'Failed to check image', details: error.message },
+      { error: 'Failed to check image', details: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
     );
   }
