@@ -62,8 +62,7 @@ const WaitlistPage = () => {
     'Commodities',
     'Derivatives',
     'Cryptocurrency',
-    'Real Estate',
-    'Alternative Investments'
+    'Real Estate'
   ];
 
   const budgetRanges = [

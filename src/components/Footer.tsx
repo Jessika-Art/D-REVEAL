@@ -35,8 +35,11 @@ const Footer = () => {
             <ul className="space-y-2 text-sm">
               <span className="text-gray-400 hover:text-white transition-colors">Cryptocurrency</span><br />
               <span className="text-gray-400 hover:text-white transition-colors">Forex</span><br />
-              <span className="text-gray-400 hover:text-white transition-colors">Stocks</span><br />
+              <span className="text-gray-400 hover:text-white transition-colors">Derivatives</span><br />
               <span className="text-gray-400 hover:text-white transition-colors">Commodities</span><br />
+              <span className="text-gray-400 hover:text-white transition-colors">Equities</span><br />
+              <span className="text-gray-400 hover:text-white transition-colors">Fixed Income</span><br />
+              <span className="text-gray-400 hover:text-white transition-colors">Real Estate</span><br />
 
               {/* <li><a href="#crypto" className="text-gray-400 hover:text-white transition-colors">Cryptocurrency</a></li>
               <li><a href="#forex" className="text-gray-400 hover:text-white transition-colors">Forex</a></li>
