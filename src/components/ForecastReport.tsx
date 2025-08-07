@@ -7,9 +7,50 @@ import QRCode from 'qrcode';
 
 interface ReportData {
   agent: {
+    date?: string;
     name: string;
-    version: string;
-    model: string;
+    version?: string;
+    model?: string;
+    forecast_recaps?: {
+      asset: string;
+      forecast_direction: string;
+      timeframe: string;
+      confidence_level: string;
+    };
+    technical_analysis?: {
+      [key: string]: {
+        trend: string;
+        support_resistance: {
+          support: number[];
+          resistance: number[];
+        };
+        supply_demand_zones: {
+          demand: number[];
+          supply: number[];
+        };
+        structure: {
+          BOS: string;
+          ChOCh: string;
+        };
+        indicators: {
+          cumulative_delta: string;
+          sentiment: string;
+          market_regime: string;
+        };
+      };
+    };
+    macro_fundamentals?: string;
+    economic_calendar?: Array<{
+      country: string;
+      event: string;
+      time: string;
+      impact: string;
+      forecast: string;
+      previous: string;
+    }>;
+    justification?: string;
+    strategic_notes?: string;
+    summary?: string[];
   };
   forecast: {
     asset: string;
