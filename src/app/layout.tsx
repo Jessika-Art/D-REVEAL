@@ -37,8 +37,8 @@ export const metadata: Metadata = {
     canonical: '/',
   },
   openGraph: {
-    title: "D-REVEAL | AI Forecasting Financial Markets",
-    description: "Revolutionary deep-learning algorithm that forecasts crypto, forex, stocks, and commodities with unprecedented precision.",
+    title: "D-REVEAL | Advance Forecasting Financial Markets",
+    description: "Revolutionary deep-learning algorithm that forecasts crypto, forex, stocks, commodities, and more, with unprecedented precision.",
     url: '/',
     siteName: 'D-REVEAL',
     images: [
