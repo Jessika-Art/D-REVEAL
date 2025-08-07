@@ -1,0 +1,10 @@
+<svg width="180" height="180" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="bg-gradient" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" style="stop-color:#00d285;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#212121;stop-opacity:1" />
+    </radialGradient>
+  </defs>
+  <rect width="180" height="180" rx="20" fill="url(#bg-gradient)"/>
+  <text x="90" y="110" font-family="monospace" font-size="60" font-weight="bold" text-anchor="middle" fill="white">[::]</text>
+</svg>

@@ -70,12 +70,22 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: '/favicon.ico?v=3', sizes: 'any' },
-      { url: '/favicon.ico?v=3', type: 'image/x-icon' },
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/favicon.ico', sizes: '32x32' },
+      { url: '/favicon-32x32.svg', sizes: '32x32', type: 'image/svg+xml' },
+      { url: '/favicon-16x16.svg', sizes: '16x16', type: 'image/svg+xml' }
     ],
-    shortcut: '/favicon.ico?v=3',
-    apple: '/favicon.ico?v=3',
+    apple: '/apple-touch-icon.svg',
+    shortcut: '/favicon.ico',
+    other: [
+      {
+        rel: 'mask-icon',
+        url: '/favicon.svg',
+        color: '#4F46E5'
+      }
+    ]
   },
+  manifest: '/site.webmanifest',
 };
 
 export default function RootLayout({
@@ -85,10 +95,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <link rel="icon" href="/favicon.ico?v=3" sizes="any" />
-        <link rel="shortcut icon" href="/favicon.ico?v=3" />
-      </head>
       <body className="font-sans antialiased">
         <GoogleAnalytics />
         <StructuredData />
