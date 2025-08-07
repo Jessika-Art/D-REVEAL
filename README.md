@@ -1,6 +1,4 @@
-# Marble Studio Replica
-
-A modern web development studio replica built with cutting-edge technologies.
+# D-REVEAL
 
 ## 🚀 Technologies Installed
 
