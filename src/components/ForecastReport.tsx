@@ -625,24 +625,6 @@ const ForecastReport = ({ clientName, generatedDate, chartUrl, reportData }: For
                       <div className="border-t border-white/10 pt-3">
                         <div className="text-sm text-gray-300 mb-2">Indicators</div>
                         <div className="space-y-2">
-                          {indicators.rsi && (
-                            <div>
-                              <span className="text-xs text-gray-400">RSI:</span>
-                              <div className="text-sm text-purple-300">{indicators.rsi}</div>
-                            </div>
-                          )}
-                          {indicators.macd && (
-                            <div>
-                              <span className="text-xs text-gray-400">MACD:</span>
-                              <div className="text-sm text-purple-300">{indicators.macd}</div>
-                            </div>
-                          )}
-                          {indicators.bollinger && (
-                            <div>
-                              <span className="text-xs text-gray-400">Bollinger Bands:</span>
-                              <div className="text-sm text-purple-300">{indicators.bollinger}</div>
-                            </div>
-                          )}
                           {indicators.cumulative_delta && (
                             <div>
                               <span className="text-xs text-gray-400">Cumulative Delta:</span>
@@ -653,6 +635,12 @@ const ForecastReport = ({ clientName, generatedDate, chartUrl, reportData }: For
                             <div>
                               <span className="text-xs text-gray-400">Sentiment:</span>
                               <div className="text-sm text-purple-300">{indicators.sentiment}</div>
+                            </div>
+                          )}
+                          {indicators.market_regime && (
+                            <div>
+                              <span className="text-xs text-gray-400">Market Regime:</span>
+                              <div className="text-sm text-purple-300">{indicators.market_regime}</div>
                             </div>
                           )}
                         </div>
@@ -723,7 +711,7 @@ const ForecastReport = ({ clientName, generatedDate, chartUrl, reportData }: For
               <DollarSign className="w-6 h-6 text-purple-400" />
               Macro Fundamentals
             </h3>
-            <p className="text-gray-300 leading-relaxed">{macroFundamentals.economic_outlook}</p>
+            <p className="text-gray-300 leading-relaxed">{macroFundamentals}</p>
           </motion.div>
 
           {/* Strategic Notes */}
@@ -737,7 +725,7 @@ const ForecastReport = ({ clientName, generatedDate, chartUrl, reportData }: For
               <Target className="w-6 h-6 text-purple-400" />
               Strategic Notes
             </h3>
-            <p className="text-gray-300 leading-relaxed">{strategicNotes.entry_strategy}</p>
+            <p className="text-gray-300 leading-relaxed">{strategicNotes}</p>
           </motion.div>
         </div>
 
