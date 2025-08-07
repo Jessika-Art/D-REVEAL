@@ -261,7 +261,7 @@ const ForecastReport = ({ clientName, generatedDate, chartUrl, reportData }: For
 
   // Handle different data structures safely
   const forecast = reportData.forecast || reportData.agent?.forecast_recaps;
-  const direction = forecast?.direction || forecast?.forecast_direction || 'Unknown';
+  const direction = reportData.forecast?.direction || reportData.agent?.forecast_recaps?.forecast_direction || 'Unknown';
   const asset = forecast?.asset || 'Unknown Asset';
   const timeframe = forecast?.timeframe || 'Unknown';
   
