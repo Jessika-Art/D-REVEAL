@@ -9,7 +9,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "D-REVEAL - AI Financial Market Forecasting",
+  title: "D-REVEAL | AI Forecasting Financial Markets",
   description: "Revolutionary deep-learning algorithm that forecasts crypto, forex, stocks, and commodities with unprecedented precision. Dominate markets with D-REVEAL's predictive intelligence.",
   keywords: [
     "AI financial forecasting",
@@ -26,6 +26,7 @@ export const metadata: Metadata = {
   authors: [{ name: "D-REVEAL" }],
   creator: "D-REVEAL",
   publisher: "D-REVEAL",
+  applicationName: "D-REVEAL",
   formatDetection: {
     email: false,
     address: false,
@@ -36,7 +37,7 @@ export const metadata: Metadata = {
     canonical: '/',
   },
   openGraph: {
-    title: "D-REVEAL - AI Financial Market Forecasting",
+    title: "D-REVEAL | AI Forecasting Financial Markets",
     description: "Revolutionary deep-learning algorithm that forecasts crypto, forex, stocks, and commodities with unprecedented precision.",
     url: '/',
     siteName: 'D-REVEAL',
@@ -53,7 +54,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: "D-REVEAL - AI Financial Market Forecasting",
+    title: "D-REVEAL | AI Forecasting Financial Markets",
     description: "Revolutionary deep-learning algorithm that forecasts crypto, forex, stocks, and commodities with unprecedented precision.",
     images: ['/D-REVEAL.png'],
   },
@@ -71,17 +72,29 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/favicon.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicon.ico', sizes: '16x16' },
       { url: '/favicon.ico', sizes: '32x32' },
       { url: '/favicon-32x32.svg', sizes: '32x32', type: 'image/svg+xml' },
       { url: '/favicon-16x16.svg', sizes: '16x16', type: 'image/svg+xml' }
     ],
-    apple: '/apple-touch-icon.svg',
+    apple: [
+      { url: '/apple-touch-icon.svg', sizes: '180x180', type: 'image/svg+xml' }
+    ],
     shortcut: '/favicon.ico',
     other: [
       {
         rel: 'mask-icon',
         url: '/favicon.svg',
-        color: '#4F46E5'
+        color: '#00d285'
+      },
+      {
+        rel: 'icon',
+        url: '/favicon.ico',
+        type: 'image/x-icon'
       }
     ]
   },
