@@ -40,7 +40,7 @@ export async function GET(request: NextRequest) {
     
     return NextResponse.json({
       success: true,
-      reports: reports.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+      reports: reports.sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
     });
   } catch (error) {
     console.error('Error fetching reports:', error);
