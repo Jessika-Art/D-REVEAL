@@ -9,7 +9,7 @@ CREATE TABLE waitlist_submissions (
   company_type TEXT NOT NULL,
   aum TEXT NOT NULL,
   primary_markets TEXT[] NOT NULL,
-  current_tools TEXT[] NOT NULL,
+  current_tools TEXT,
   team_size TEXT NOT NULL,
   biggest_challenge TEXT NOT NULL,
   interest_level TEXT NOT NULL,
