@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { saveWaitlistSubmission, getWaitlistSubmissions } from '@/lib/database';
+import { sendTelegramNotification } from '@/lib/telegram';
 
 // Force dynamic rendering since we use cookies
 export const dynamic = 'force-dynamic';
@@ -18,6 +19,11 @@ export async function POST(request: NextRequest) {
 
     // Save using database function
     await saveWaitlistSubmission(submission);
+
+    // Send Telegram notification (don't block the response if it fails)
+    sendTelegramNotification(submission).catch(error => {
+      console.error('Failed to send Telegram notification:', error);
+    });
 
     return NextResponse.json({ 
       success: true, 

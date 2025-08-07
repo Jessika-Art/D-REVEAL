@@ -434,43 +434,43 @@ const ReportsAdminPage = () => {
                   animate={{ opacity: 1, x: 0 }}
                   className="bg-white/5 border border-white/10 rounded-lg p-4 hover:bg-white/10 transition-colors"
                 >
-                  <div className="flex items-center justify-between">
-                    <div className="flex-1">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <div className="flex-1 min-w-0">
                       <h3 className="text-lg font-semibold text-white mb-1">
                         {report.clientName}
                       </h3>
                       <div className="text-sm text-gray-400 space-y-1">
                         <p>Generated: {report.generatedDate}</p>
                         <p>Created: {new Date(report.createdAt).toLocaleString()}</p>
-                        <p className="font-mono text-xs">Token: {report.token}</p>
+                        <p className="font-mono text-xs break-all">Token: {report.token}</p>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-2">
                       <button
                         onClick={() => copyReportUrl(report.token)}
-                        className="flex items-center gap-1 bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg transition-colors text-sm"
+                        className="flex items-center justify-center gap-1 bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg transition-colors text-sm"
                         title="Copy Report URL"
                       >
                         <Copy className="w-4 h-4" />
-                        Copy URL
+                        <span className="sm:inline">Copy URL</span>
                       </button>
                       <a
                         href={`/report/${report.token}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-1 bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg transition-colors text-sm"
+                        className="flex items-center justify-center gap-1 bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg transition-colors text-sm"
                         title="View Report"
                       >
                         <ExternalLink className="w-4 h-4" />
-                        View
+                        <span className="sm:inline">View</span>
                       </a>
                       <button
                         onClick={() => handleDeleteReport(report.id)}
-                        className="flex items-center gap-1 bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-lg transition-colors text-sm"
+                        className="flex items-center justify-center gap-1 bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-lg transition-colors text-sm"
                         title="Delete Report"
                       >
                         <Trash2 className="w-4 h-4" />
-                        Delete
+                        <span className="sm:inline">Delete</span>
                       </button>
                     </div>
                   </div>

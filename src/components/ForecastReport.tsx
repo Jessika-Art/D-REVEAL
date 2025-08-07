@@ -417,24 +417,24 @@ const ForecastReport = ({ clientName, generatedDate, chartUrl, reportData }: For
             </div>
           </div>
 
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl md:text-4xl font-bold">Forecast Report</h1>
-              <p className="text-purple-300 mt-2">to {clientName}</p>
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="flex-1">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold">Forecast Report</h1>
+              <p className="text-purple-300 mt-1 sm:mt-2 text-sm sm:text-base">to {clientName}</p>
             </div>
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-3 sm:gap-6 w-full sm:w-auto justify-between sm:justify-end">
               {/* Logo */}
-              <div className="hidden md:block">
+              <div className="block sm:hidden md:block">
                 <img 
                   src="/D-REVEAL full w1.png" 
                   alt="D-REVEAL Logo" 
-                  className="h-12 w-auto opacity-90 hover:opacity-100 transition-opacity"
+                  className="h-8 sm:h-10 md:h-12 w-auto opacity-90 hover:opacity-100 transition-opacity"
                 />
               </div>
               <div className="text-right">
-                <div className="text-sm text-gray-300">Generated</div>
-                <div className="text-lg font-semibold">{formatGeneratedDate(generatedDate)}</div>
-                <div className="text-sm text-gray-600">dd/mm/yyyy</div>
+                <div className="text-xs sm:text-sm text-gray-300">Generated</div>
+                <div className="text-sm sm:text-lg font-semibold">{formatGeneratedDate(generatedDate)}</div>
+                <div className="text-xs sm:text-sm text-gray-600">dd/mm/yyyy</div>
               </div>
             </div>
           </div>
@@ -447,32 +447,32 @@ const ForecastReport = ({ clientName, generatedDate, chartUrl, reportData }: For
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.1 }}
-          className="bg-white/10 backdrop-blur-sm rounded-3xl p-8 mb-8 border border-white/20"
+          className="bg-white/10 backdrop-blur-sm rounded-3xl p-4 sm:p-6 lg:p-8 mb-8 border border-white/20"
         >
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-            <div className="text-center">
-              <div className="text-sm text-gray-300 mb-2">Asset</div>
-              <div className="text-3xl font-bold text-purple-300">{asset}</div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6">
+            <div className="text-center col-span-2 sm:col-span-1">
+              <div className="text-xs sm:text-sm text-gray-300 mb-2">Asset</div>
+              <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-purple-300">{asset}</div>
             </div>
-            <div className="text-center">
-              <div className="text-sm text-gray-300 mb-2">Direction</div>
-              <div className={`flex items-center justify-center gap-2 text-2xl font-bold ${getDirectionColor(direction)}`}>
-                <DirectionIcon className="w-8 h-8" />
+            <div className="text-center col-span-2 sm:col-span-1">
+              <div className="text-xs sm:text-sm text-gray-300 mb-2">Direction</div>
+              <div className={`flex items-center justify-center gap-1 sm:gap-2 text-lg sm:text-xl lg:text-2xl font-bold ${getDirectionColor(direction)}`}>
+                <DirectionIcon className="w-5 h-5 sm:w-6 sm:h-6 lg:w-8 lg:h-8" />
                 {direction}
               </div>
             </div>
             <div className="text-center">
-              <div className="text-sm text-gray-300 mb-2">Timeframe</div>
-              <div className="text-2xl font-bold text-blue-300">{timeframe}</div>
+              <div className="text-xs sm:text-sm text-gray-300 mb-2">Timeframe</div>
+              <div className="text-lg sm:text-xl lg:text-2xl font-bold text-blue-300">{timeframe}</div>
             </div>
             <div className="text-center">
-              <div className="text-sm text-gray-300 mb-2">Duration</div>
-              <div className="text-2xl font-bold text-purple-400">{duration || 'N/A'}</div>
+              <div className="text-xs sm:text-sm text-gray-300 mb-2">Duration</div>
+              <div className="text-lg sm:text-xl lg:text-2xl font-bold text-purple-400">{duration || 'N/A'}</div>
             </div>
-            <div className="text-center">
-              <div className="text-sm text-gray-300 mb-2">Confidence</div>
+            <div className="text-center col-span-2 sm:col-span-1">
+              <div className="text-xs sm:text-sm text-gray-300 mb-2">Confidence</div>
               <div className="flex items-center justify-center">
-                <span className={`px-4 py-2 rounded-full text-white font-bold ${getConfidenceColor(confidenceNumber)}`}>
+                <span className={`px-3 py-1 sm:px-4 sm:py-2 rounded-full text-white font-bold text-sm sm:text-base ${getConfidenceColor(confidenceNumber)}`}>
                   {typeof confidence === 'string' ? confidence : `${confidenceNumber}%`}
                 </span>
               </div>
@@ -526,7 +526,7 @@ const ForecastReport = ({ clientName, generatedDate, chartUrl, reportData }: For
               </div>
             </div>
             <div className="p-2">
-              <div className="bg-black/30 rounded-xl border border-white/10 relative" style={{ height: '600px' }}>
+              <div className="bg-black/30 rounded-xl border border-white/10 relative h-64 sm:h-80 md:h-96 lg:h-[600px]">
                 <img 
                   src={chartUrl} 
                   alt={`${asset} ${timeframe} Forecast Chart`}
@@ -571,7 +571,7 @@ const ForecastReport = ({ clientName, generatedDate, chartUrl, reportData }: For
             <BarChart3 className="w-8 h-8 text-purple-400" />
             Technical Analysis
           </h2>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {Object.entries(technicalAnalysis).map(([timeframe, analysis], index) => {
               // Handle different data structures
               const trend = analysis.trend || 'N/A';
@@ -657,31 +657,61 @@ const ForecastReport = ({ clientName, generatedDate, chartUrl, reportData }: For
             Economic Calendar
           </h2>
           <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 overflow-hidden">
-            <div className="overflow-x-auto">
+            {/* Mobile Card Layout */}
+            <div className="block md:hidden">
+              <div className="space-y-4 p-4">
+                {economicCalendar.map((event, index) => (
+                  <div key={index} className="bg-white/5 rounded-lg p-4 border border-white/10">
+                    <div className="flex justify-between items-start mb-2">
+                      <div className="text-sm font-medium text-white">{event.event || 'N/A'}</div>
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${getImpactColor(event.impact || 'low')}`}>
+                        {event.impact || 'N/A'}
+                      </span>
+                    </div>
+                    <div className="text-xs text-gray-400 mb-2">
+                      {event.time ? formatDate(event.time) : 'N/A'}
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 text-xs">
+                      <div>
+                        <span className="text-gray-400">Forecast:</span>
+                        <div className="text-blue-300">{event.forecast || 'N/A'}</div>
+                      </div>
+                      <div>
+                        <span className="text-gray-400">Previous:</span>
+                        <div className="text-gray-300">{event.previous || 'N/A'}</div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+            {/* Desktop Table Layout */}
+            <div className="hidden md:block overflow-x-auto">
               <table className="w-full">
                 <thead className="bg-white/10">
                   <tr>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Date</th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Event</th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Impact</th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Forecast</th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Previous</th>
+                    <th className="px-4 lg:px-6 py-4 text-left text-sm font-semibold text-gray-300">Date</th>
+                    <th className="px-4 lg:px-6 py-4 text-left text-sm font-semibold text-gray-300">Event</th>
+                    <th className="px-4 lg:px-6 py-4 text-left text-sm font-semibold text-gray-300">Impact</th>
+                    <th className="px-4 lg:px-6 py-4 text-left text-sm font-semibold text-gray-300">Forecast</th>
+                    <th className="px-4 lg:px-6 py-4 text-left text-sm font-semibold text-gray-300">Previous</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-white/10">
                   {economicCalendar.map((event, index) => (
                     <tr key={index} className="hover:bg-white/5 transition-colors">
-                      <td className="px-6 py-4 text-sm text-white">
+                      <td className="px-4 lg:px-6 py-4 text-sm text-white">
                         {event.time ? formatDate(event.time) : 'N/A'}
                       </td>
-                      <td className="px-6 py-4 text-sm text-white">{event.event || 'N/A'}</td>
-                      <td className="px-6 py-4">
+                      <td className="px-4 lg:px-6 py-4 text-sm text-white">{event.event || 'N/A'}</td>
+                      <td className="px-4 lg:px-6 py-4">
                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${getImpactColor(event.impact || 'low')}`}>
                           {event.impact || 'N/A'}
                         </span>
                       </td>
-                      <td className="px-6 py-4 text-sm text-blue-300">{event.forecast || 'N/A'}</td>
-                      <td className="px-6 py-4 text-sm text-gray-400">{event.previous || 'N/A'}</td>
+                      <td className="px-4 lg:px-6 py-4 text-sm text-blue-300">{event.forecast || 'N/A'}</td>
+                      <td className="px-4 lg:px-6 py-4 text-sm text-gray-400">{event.previous || 'N/A'}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -691,19 +721,19 @@ const ForecastReport = ({ clientName, generatedDate, chartUrl, reportData }: For
         </motion.div>
 
         {/* Analysis Sections */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 mb-8">
           {/* Macro Fundamentals */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.5 }}
-            className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10"
+            className="bg-white/5 backdrop-blur-sm rounded-2xl p-4 sm:p-6 border border-white/10"
           >
-            <h3 className="text-xl font-bold mb-4 flex items-center gap-3">
-              <DollarSign className="w-6 h-6 text-purple-400" />
+            <h3 className="text-lg sm:text-xl font-bold mb-4 flex items-center gap-2 sm:gap-3">
+              <DollarSign className="w-5 h-5 sm:w-6 sm:h-6 text-purple-400" />
               Macro Fundamentals
             </h3>
-            <p className="text-gray-300 leading-relaxed">{macroFundamentals}</p>
+            <p className="text-gray-300 leading-relaxed text-sm sm:text-base">{macroFundamentals}</p>
           </motion.div>
 
           {/* Strategic Notes */}
@@ -711,13 +741,13 @@ const ForecastReport = ({ clientName, generatedDate, chartUrl, reportData }: For
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10"
+            className="bg-white/5 backdrop-blur-sm rounded-2xl p-4 sm:p-6 border border-white/10"
           >
-            <h3 className="text-xl font-bold mb-4 flex items-center gap-3">
-              <Target className="w-6 h-6 text-purple-400" />
+            <h3 className="text-lg sm:text-xl font-bold mb-4 flex items-center gap-2 sm:gap-3">
+              <Target className="w-5 h-5 sm:w-6 sm:h-6 text-purple-400" />
               Strategic Notes
             </h3>
-            <p className="text-gray-300 leading-relaxed">{strategicNotes}</p>
+            <p className="text-gray-300 leading-relaxed text-sm sm:text-base">{strategicNotes}</p>
           </motion.div>
         </div>
 
@@ -726,13 +756,13 @@ const ForecastReport = ({ clientName, generatedDate, chartUrl, reportData }: For
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.7 }}
-          className="bg-gradient-to-r from-purple-500/20 to-blue-500/20 backdrop-blur-sm rounded-2xl p-8 border border-purple-300/30 mb-8"
+          className="bg-gradient-to-r from-purple-500/20 to-blue-500/20 backdrop-blur-sm rounded-2xl p-4 sm:p-6 lg:p-8 border border-purple-300/30 mb-8"
         >
-          <h3 className="text-2xl font-bold mb-4 flex items-center gap-3">
-            <Activity className="w-8 h-8 text-purple-400" />
+          <h3 className="text-xl sm:text-2xl font-bold mb-4 flex items-center gap-2 sm:gap-3">
+            <Activity className="w-6 h-6 sm:w-8 sm:h-8 text-purple-400" />
             AI Model Justification
           </h3>
-          <p className="text-gray-200 leading-relaxed text-lg">
+          <p className="text-gray-200 leading-relaxed text-sm sm:text-base lg:text-lg">
             {reportData?.agent?.justification || 'No justification data available'}
           </p>
         </motion.div>
@@ -742,10 +772,10 @@ const ForecastReport = ({ clientName, generatedDate, chartUrl, reportData }: For
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.8 }}
-          className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 mb-8"
+          className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 sm:p-6 lg:p-8 border border-white/20 mb-8"
         >
-          <h3 className="text-2xl font-bold mb-6 flex items-center gap-3">
-            <CheckCircle className="w-8 h-8 text-green-400" />
+          <h3 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 flex items-center gap-2 sm:gap-3">
+            <CheckCircle className="w-6 h-6 sm:w-8 sm:h-8 text-green-400" />
             Executive Summary
           </h3>
           <div className="space-y-3">
@@ -756,16 +786,16 @@ const ForecastReport = ({ clientName, generatedDate, chartUrl, reportData }: For
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.6, delay: 0.9 + index * 0.1 }}
-                  className="flex items-start gap-3"
+                  className="flex items-start gap-2 sm:gap-3"
                 >
-                  <div className="flex-shrink-0 w-6 h-6 bg-green-400 rounded-full flex items-center justify-center mt-0.5">
-                    <span className="text-green-900 text-sm font-bold">✓</span>
+                  <div className="flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6 bg-green-400 rounded-full flex items-center justify-center mt-0.5">
+                    <span className="text-green-900 text-xs sm:text-sm font-bold">✓</span>
                   </div>
-                  <p className="text-gray-200 leading-relaxed">{point}</p>
+                  <p className="text-gray-200 leading-relaxed text-sm sm:text-base">{point}</p>
                 </motion.div>
               ))
             ) : (
-              <p className="text-gray-200 leading-relaxed">
+              <p className="text-gray-200 leading-relaxed text-sm sm:text-base">
                 {reportData?.agent?.summary || 'No summary data available'}
               </p>
             )}
