@@ -14,6 +14,26 @@ export default function robots(): MetadataRoute.Robots {
           '/report/',
         ],
       },
+      // Specific rules for Bing crawler
+      {
+        userAgent: 'bingbot',
+        allow: '/',
+        disallow: [
+          '/admin/',
+          '/api/',
+          '/report/',
+        ],
+      },
+      // Specific rules for Google crawler
+      {
+        userAgent: 'Googlebot',
+        allow: '/',
+        disallow: [
+          '/admin/',
+          '/api/',
+          '/report/',
+        ],
+      },
     ],
     sitemap: `${baseUrl}/sitemap.xml`,
   }
