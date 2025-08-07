@@ -14,7 +14,7 @@ const WaitlistPage = () => {
     jobTitle: '',
     companyType: '',
     aum: '',
-    primaryMarkets: [],
+    primaryMarkets: [] as string[],
     currentTools: '',
     teamSize: '',
     location: '',
