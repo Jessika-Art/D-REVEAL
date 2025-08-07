@@ -44,3 +44,20 @@ ALTER TABLE reports ENABLE ROW LEVEL SECURITY;
 -- Create policies (allow all operations for now - you can restrict later)
 CREATE POLICY "Allow all operations on waitlist_submissions" ON waitlist_submissions FOR ALL USING (true);
 CREATE POLICY "Allow all operations on reports" ON reports FOR ALL USING (true);
+
+-- Storage policies for file uploads
+-- Allow public access to storage buckets
+INSERT INTO storage.buckets (id, name, public) VALUES ('report-charts', 'report-charts', true);
+INSERT INTO storage.buckets (id, name, public) VALUES ('report-data', 'report-data', true);
+
+-- Create storage policies for report-charts bucket
+CREATE POLICY "Allow public uploads to report-charts" ON storage.objects FOR INSERT WITH CHECK (bucket_id = 'report-charts');
+CREATE POLICY "Allow public access to report-charts" ON storage.objects FOR SELECT USING (bucket_id = 'report-charts');
+CREATE POLICY "Allow public updates to report-charts" ON storage.objects FOR UPDATE USING (bucket_id = 'report-charts');
+CREATE POLICY "Allow public deletes to report-charts" ON storage.objects FOR DELETE USING (bucket_id = 'report-charts');
+
+-- Create storage policies for report-data bucket
+CREATE POLICY "Allow public uploads to report-data" ON storage.objects FOR INSERT WITH CHECK (bucket_id = 'report-data');
+CREATE POLICY "Allow public access to report-data" ON storage.objects FOR SELECT USING (bucket_id = 'report-data');
+CREATE POLICY "Allow public updates to report-data" ON storage.objects FOR UPDATE USING (bucket_id = 'report-data');
+CREATE POLICY "Allow public deletes to report-data" ON storage.objects FOR DELETE USING (bucket_id = 'report-data');

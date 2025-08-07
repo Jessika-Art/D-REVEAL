@@ -1,46 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import fs from 'fs';
-import path from 'path';
+import { saveWaitlistSubmission, getWaitlistSubmissions } from '@/lib/database';
 
 // Force dynamic rendering since we use cookies
 export const dynamic = 'force-dynamic';
-
-const DATA_FILE = path.join(process.cwd(), 'data', 'waitlist-submissions.json');
-
-// Ensure data directory exists
-function ensureDataDirectory() {
-  const dataDir = path.dirname(DATA_FILE);
-  if (!fs.existsSync(dataDir)) {
-    fs.mkdirSync(dataDir, { recursive: true });
-  }
-}
-
-// Read existing submissions
-function readSubmissions() {
-  ensureDataDirectory();
-  if (!fs.existsSync(DATA_FILE)) {
-    return [];
-  }
-  try {
-    const data = fs.readFileSync(DATA_FILE, 'utf8');
-    return JSON.parse(data);
-  } catch (error) {
-    console.error('Error reading submissions:', error);
-    return [];
-  }
-}
-
-// Write submissions to file
-function writeSubmissions(submissions: any[]) {
-  ensureDataDirectory();
-  try {
-    fs.writeFileSync(DATA_FILE, JSON.stringify(submissions, null, 2));
-  } catch (error) {
-    console.error('Error writing submissions:', error);
-    throw error;
-  }
-}
 
 export async function POST(request: NextRequest) {
   try {
@@ -53,14 +16,8 @@ export async function POST(request: NextRequest) {
       ...formData
     };
 
-    // Read existing submissions
-    const submissions = readSubmissions();
-    
-    // Add new submission
-    submissions.push(submission);
-    
-    // Write back to file
-    writeSubmissions(submissions);
+    // Save using database function
+    await saveWaitlistSubmission(submission);
 
     return NextResponse.json({ 
       success: true, 
@@ -111,7 +68,7 @@ export async function GET() {
       }
 
       // Session is valid, return submissions
-      const submissions = readSubmissions();
+      const submissions = await getWaitlistSubmissions();
       return NextResponse.json({ 
         success: true, 
         submissions,
