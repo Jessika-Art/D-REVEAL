@@ -51,8 +51,8 @@ Add to your production environment variables:
 BING_WEBMASTER_API_KEY=your-actual-api-key-here
 ```
 
-**For Vercel:**
-1. Go to your project settings
+**For Render:**
+1. Go to your service dashboard
 2. Navigate to Environment Variables
 3. Add `BING_WEBMASTER_API_KEY` with your API key
 

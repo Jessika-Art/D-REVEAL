@@ -67,7 +67,7 @@ When you're ready to switch to database:
 4. You can manually migrate existing data if needed
 
 ## Deployment
-When deploying to Vercel/Netlify:
+When deploying to Render or other platforms:
 1. Add environment variables to your deployment platform
 2. The app will automatically use database storage
 3. Your data will persist across deployments
