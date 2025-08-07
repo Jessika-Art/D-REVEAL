@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { saveWaitlistSubmission, getWaitlistSubmissions } from '@/lib/database';
+import { saveWaitlistSubmission, getWaitlistSubmissions, deleteWaitlistSubmission } from '@/lib/database';
 import { sendTelegramNotification } from '@/lib/telegram';
 
 // Force dynamic rendering since we use cookies
@@ -91,6 +91,74 @@ export async function GET() {
     console.error('Error reading submissions:', error);
     return NextResponse.json(
       { success: false, message: 'Failed to read submissions' },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(request: NextRequest) {
+  try {
+    // Check authentication for DELETE requests
+    const cookieStore = cookies();
+    const sessionToken = cookieStore.get('admin-session');
+
+    if (!sessionToken) {
+      return NextResponse.json(
+        { success: false, message: 'Authentication required' },
+        { status: 401 }
+      );
+    }
+
+    // Validate session token
+    try {
+      const sessionData = JSON.parse(Buffer.from(sessionToken.value, 'base64').toString());
+      const now = Date.now();
+      
+      // Check if session is valid and not expired
+      if (!sessionData.username || !sessionData.expiresAt || now > sessionData.expiresAt) {
+        return NextResponse.json(
+          { success: false, message: 'Invalid or expired session' },
+          { status: 401 }
+        );
+      }
+
+      // Verify username matches
+      if (sessionData.username !== (process.env.ADMIN_USERNAME || 'admin')) {
+        return NextResponse.json(
+          { success: false, message: 'Invalid session' },
+          { status: 401 }
+        );
+      }
+
+      // Get the submission ID from the request
+      const { searchParams } = new URL(request.url);
+      const id = searchParams.get('id');
+
+      if (!id) {
+        return NextResponse.json(
+          { success: false, message: 'Submission ID is required' },
+          { status: 400 }
+        );
+      }
+
+      // Delete the submission
+      await deleteWaitlistSubmission(id);
+
+      return NextResponse.json({ 
+        success: true, 
+        message: 'Submission deleted successfully' 
+      });
+    } catch (parseError) {
+      // If parsing fails, session format is invalid
+      return NextResponse.json(
+        { success: false, message: 'Invalid session format' },
+        { status: 401 }
+      );
+    }
+  } catch (error) {
+    console.error('Error deleting submission:', error);
+    return NextResponse.json(
+      { success: false, message: 'Failed to delete submission' },
       { status: 500 }
     );
   }

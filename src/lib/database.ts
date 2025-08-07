@@ -104,6 +104,21 @@ export async function getWaitlistSubmissions() {
   }
 }
 
+export async function deleteWaitlistSubmission(id: string) {
+  if (USE_DATABASE) {
+    const { error } = await supabase
+      .from('waitlist_submissions')
+      .delete()
+      .eq('id', id)
+    
+    if (error) throw error
+  } else {
+    const submissions = await getWaitlistSubmissions()
+    const filteredSubmissions = submissions.filter((submission: any) => submission.id !== id)
+    fs.writeFileSync(DATA_FILE, JSON.stringify(filteredSubmissions, null, 2))
+  }
+}
+
 // REPORTS
 export async function saveReport(report: any) {
   if (USE_DATABASE) {

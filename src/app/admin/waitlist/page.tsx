@@ -16,7 +16,8 @@ import {
   X,
   LogOut,
   MessageSquare,
-  FileText
+  FileText,
+  Trash2
 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -48,6 +49,7 @@ const WaitlistAdminPage = () => {
   const [selectedSubmission, setSelectedSubmission] = useState<WaitlistSubmission | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
   
   // Session timeout state
   const [showTimeoutWarning, setShowTimeoutWarning] = useState(false);
@@ -143,6 +145,34 @@ const WaitlistAdminPage = () => {
   useEffect(() => {
     checkAuthentication();
   }, []);
+
+  const deleteSubmission = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this submission? This action cannot be undone.')) {
+      return;
+    }
+
+    setDeletingId(id);
+    try {
+      const response = await fetch(`/api/waitlist?id=${id}`, {
+        method: 'DELETE',
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        // Remove the submission from the local state
+        setSubmissions(prev => prev.filter(sub => sub.id !== id));
+        setError(null);
+      } else {
+        setError('Failed to delete submission');
+      }
+    } catch (err) {
+      setError('Error deleting submission');
+      console.error('Error:', err);
+    } finally {
+      setDeletingId(null);
+    }
+  };
 
   const exportToCSV = () => {
     if (submissions.length === 0) return;
@@ -391,13 +421,27 @@ const WaitlistAdminPage = () => {
                             </span>
                           </td>
                           <td className="px-6 py-4 text-sm">
-                            <button
-                              onClick={() => setSelectedSubmission(submission)}
-                              className="flex items-center gap-1 text-blue-400 hover:text-blue-300 transition-colors"
-                            >
-                              <Eye className="w-4 h-4" />
-                              View Details
-                            </button>
+                            <div className="flex items-center gap-2">
+                              <button
+                                onClick={() => setSelectedSubmission(submission)}
+                                className="flex items-center gap-1 text-blue-400 hover:text-blue-300 transition-colors"
+                              >
+                                <Eye className="w-4 h-4" />
+                                View Details
+                              </button>
+                              <button
+                                onClick={() => deleteSubmission(submission.id)}
+                                disabled={deletingId === submission.id}
+                                className="flex items-center gap-1 text-red-400 hover:text-red-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                title="Delete submission"
+                              >
+                                {deletingId === submission.id ? (
+                                  <RefreshCw className="w-4 h-4 animate-spin" />
+                                ) : (
+                                  <Trash2 className="w-4 h-4" />
+                                )}
+                              </button>
+                            </div>
                           </td>
                         </motion.tr>
                       ))}
@@ -451,14 +495,26 @@ const WaitlistAdminPage = () => {
                           </span>
                         </div>
 
-                        {/* Action Button */}
-                        <div className="pt-2">
+                        {/* Action Buttons */}
+                        <div className="pt-2 flex gap-2">
                           <button
                             onClick={() => setSelectedSubmission(submission)}
-                            className="w-full flex items-center justify-center gap-2 text-blue-400 hover:text-blue-300 transition-colors py-2 px-3 bg-blue-500/10 hover:bg-blue-500/20 rounded-lg text-sm"
+                            className="flex-1 flex items-center justify-center gap-2 text-blue-400 hover:text-blue-300 transition-colors py-2 px-3 bg-blue-500/10 hover:bg-blue-500/20 rounded-lg text-sm"
                           >
                             <Eye className="w-4 h-4" />
                             View Details
+                          </button>
+                          <button
+                            onClick={() => deleteSubmission(submission.id)}
+                            disabled={deletingId === submission.id}
+                            className="flex items-center justify-center gap-2 text-red-400 hover:text-red-300 transition-colors py-2 px-3 bg-red-500/10 hover:bg-red-500/20 rounded-lg text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                            title="Delete submission"
+                          >
+                            {deletingId === submission.id ? (
+                              <RefreshCw className="w-4 h-4 animate-spin" />
+                            ) : (
+                              <Trash2 className="w-4 h-4" />
+                            )}
                           </button>
                         </div>
                       </div>
