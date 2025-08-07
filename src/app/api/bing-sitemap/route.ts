@@ -10,7 +10,7 @@ import {
 export async function POST(request: NextRequest) {
   try {
     const { action } = await request.json();
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL!;
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://d-reveal.onrender.com';
     
     if (!baseUrl) {
       return NextResponse.json(
@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL!;
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://d-reveal.onrender.com';
     
     if (!baseUrl) {
       return NextResponse.json(

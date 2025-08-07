@@ -1,12 +1,14 @@
 import Script from 'next/script'
 
 export default function StructuredData() {
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://d-reveal.onrender.com'
+  
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     "name": "D-REVEAL",
     "description": "Revolutionary deep-learning algorithm that forecasts crypto, forex, stocks, and commodities with unprecedented precision. Dominate markets with D-REVEAL's predictive intelligence.",
-    "url": process.env.NEXT_PUBLIC_SITE_URL!,
+    "url": baseUrl,
     "applicationCategory": "FinanceApplication",
     "operatingSystem": "Web Browser",
     "offers": {
@@ -18,7 +20,7 @@ export default function StructuredData() {
     "provider": {
       "@type": "Organization",
       "name": "D-REVEAL",
-      "url": process.env.NEXT_PUBLIC_SITE_URL!
+      "url": baseUrl
     },
     "featureList": [
       "AI-powered financial market forecasting",
@@ -35,7 +37,7 @@ export default function StructuredData() {
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": "D-REVEAL",
-    "url": process.env.NEXT_PUBLIC_SITE_URL!,
+    "url": baseUrl,
     "description": "AI-powered financial market forecasting platform",
     "foundingDate": "2024",
     "industry": "Financial Technology",
