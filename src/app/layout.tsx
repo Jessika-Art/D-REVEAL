@@ -9,8 +9,8 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "D-REVEAL",
-  description: "D-REVEAL | AI Forecasting Financial Markets. Revolutionary deep-learning algorithm that forecasts crypto, forex, stocks, and commodities with unprecedented precision. Dominate markets with D-REVEAL's predictive intelligence.",
+  title: "D-REVEAL | AI Forecasting Financial Markets",
+  description: "Revolutionary deep-learning algorithm that forecasts crypto, forex, stocks, and commodities with unprecedented precision. Dominate markets with D-REVEAL's predictive intelligence.",
   keywords: [
     "AI financial forecasting",
     "market prediction",
