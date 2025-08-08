@@ -1,17 +1,17 @@
 {
-  "name": "D-REVEAL - AI Financial Market Forecasting Platform",
+  "name": "D-REVEAL",
   "short_name": "D-REVEAL",
-  "description": "Revolutionary AI-powered deep-learning algorithm for cryptocurrency, forex, stocks, and commodities forecasting",
+  "description": "AI Financial Market Forecasting",
   "icons": [
     {
-      "src": "/favicon-16x16.png",
+      "src": "/favicon-16x16.svg",
       "sizes": "16x16",
-      "type": "image/png"
+      "type": "image/svg+xml"
     },
     {
-      "src": "/favicon-32x32.png",
+      "src": "/favicon-32x32.svg",
       "sizes": "32x32",
-      "type": "image/png"
+      "type": "image/svg+xml"
     },
     {
       "src": "/favicon.svg",
@@ -22,20 +22,10 @@
       "src": "/apple-touch-icon.svg",
       "sizes": "180x180",
       "type": "image/svg+xml"
-    },
-    {
-      "src": "/D-REVEAL.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
     }
   ],
-  "theme_color": "#8b5cf6",
+  "theme_color": "#3B82F6",
   "background_color": "#000000",
   "display": "standalone",
-  "start_url": "/",
-  "scope": "/",
-  "orientation": "portrait-primary",
-  "categories": ["finance", "business", "productivity"],
-  "lang": "en"
+  "start_url": "/"
 }
