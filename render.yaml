@@ -9,7 +9,7 @@ services:
       - key: NODE_ENV
         value: production
       - key: NEXT_PUBLIC_SITE_URL
-        sync: false
+        value: https://d-reveal.onrender.com
       - key: ADMIN_USERNAME
         sync: false
       - key: ADMIN_PASSWORD

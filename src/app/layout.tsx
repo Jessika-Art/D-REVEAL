@@ -9,8 +9,11 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "D-REVEAL | AI Forecasting Financial Markets",
-  description: "Revolutionary deep-learning algorithm that forecasts crypto, forex, stocks, and commodities with unprecedented precision. Dominate markets with D-REVEAL's predictive intelligence.",
+  title: {
+    default: "D-REVEAL | AI Financial Market Forecasting Platform",
+    template: "%s | D-REVEAL"
+  },
+  description: "Revolutionary AI-powered deep-learning algorithm that forecasts cryptocurrency, forex, stocks, and commodities with unprecedented precision. Transform your trading with D-REVEAL's predictive intelligence and dominate financial markets.",
   keywords: [
     "AI financial forecasting",
     "market prediction",
@@ -37,8 +40,8 @@ export const metadata: Metadata = {
     canonical: '/',
   },
   openGraph: {
-    title: "D-REVEAL | Advance Forecasting Financial Markets",
-    description: "Revolutionary deep-learning algorithm that forecasts crypto, forex, stocks, commodities, and more, with unprecedented precision.",
+    title: "D-REVEAL | AI Financial Market Forecasting Platform",
+    description: "Revolutionary AI-powered deep-learning algorithm that forecasts cryptocurrency, forex, stocks, and commodities with unprecedented precision. Transform your trading with predictive intelligence.",
     url: '/',
     siteName: 'D-REVEAL',
     images: [
@@ -46,7 +49,7 @@ export const metadata: Metadata = {
         url: '/D-REVEAL.png',
         width: 1200,
         height: 630,
-        alt: 'D-REVEAL AI Financial Market Forecasting',
+        alt: 'D-REVEAL - AI Financial Market Forecasting Platform',
       },
     ],
     locale: 'en_US',
@@ -54,9 +57,11 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: "D-REVEAL | AI Forecasting Financial Markets",
-    description: "Revolutionary deep-learning algorithm that forecasts crypto, forex, stocks, and commodities with unprecedented precision.",
+    title: "D-REVEAL | AI Financial Market Forecasting Platform",
+    description: "Revolutionary AI-powered algorithm for cryptocurrency, forex, stocks & commodities forecasting. Transform your trading with predictive intelligence.",
     images: ['/D-REVEAL.png'],
+    creator: '@D_REVEAL',
+    site: '@D_REVEAL',
   },
   robots: {
     index: true,
@@ -71,15 +76,10 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: '/favicon.svg', type: 'image/svg+xml' },
-      { url: '/favicon.png', sizes: '32x32', type: 'image/png' },
-      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
-      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
       { url: '/favicon.ico', sizes: 'any' },
-      { url: '/favicon.ico', sizes: '16x16' },
-      { url: '/favicon.ico', sizes: '32x32' },
-      { url: '/favicon-32x32.svg', sizes: '32x32', type: 'image/svg+xml' },
-      { url: '/favicon-16x16.svg', sizes: '16x16', type: 'image/svg+xml' }
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' }
     ],
     apple: [
       { url: '/apple-touch-icon.svg', sizes: '180x180', type: 'image/svg+xml' }
@@ -89,12 +89,7 @@ export const metadata: Metadata = {
       {
         rel: 'mask-icon',
         url: '/favicon.svg',
-        color: '#00d285'
-      },
-      {
-        rel: 'icon',
-        url: '/favicon.ico',
-        type: 'image/x-icon'
+        color: '#8b5cf6'
       }
     ]
   },
